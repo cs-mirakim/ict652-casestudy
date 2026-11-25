@@ -1,0 +1,3846 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ICT652 Case Study - Toxic Behavior &amp; Harassment in Multiplayer Online Games</title>
+  <!-- Google Fonts: Space Grotesk (Headings) & Plus Jakarta Sans (Body) with clean system fallbacks -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* =========================================================================
+       1. THEME SYSTEM - GRAPHIC-COMIC MODERN (DARK DEFAULT + LIGHT TOGGLE)
+       ========================================================================= */
+    :root {
+      --bg-outer: #070a10;
+      --bg-primary: #0d1117;
+      --bg-surface: #161b22;
+      --bg-inset: #0f141c;
+      --bg-hover: #1f2733;
+      --bg-bar: rgba(13, 17, 23, 0.94);
+      --bg-modal: rgba(7, 10, 16, 0.96);
+
+      --bg-soft-blue: rgba(59, 130, 246, 0.16);
+      --bg-soft-cyan: rgba(0, 229, 255, 0.12);
+      --bg-soft-red: rgba(255, 71, 87, 0.15);
+      --bg-soft-green: rgba(46, 213, 115, 0.14);
+      --bg-soft-amber: rgba(245, 158, 11, 0.15);
+
+      --text-main: #f0f6fc;
+      --text-body: #d3dfee;
+      --text-muted: #93a3b8;
+      --text-cyan-hi: #00e5ff;
+      --text-blue-hi: #60a5fa;
+      --text-red-hi: #ff6b7a;
+      --text-green-hi: #2ed573;
+      --text-amber-hi: #fbbf24;
+
+      --accent-blue: #3b82f6;
+      --accent-cyan: #00e5ff;
+      --accent-red: #ff4757;
+      --accent-green: #2ed573;
+      --accent-amber: #f59e0b;
+
+      --border-line: rgba(148, 163, 184, 0.22);
+      --card-border: #2c384b;
+      --ink-black: #03060c;
+      --halftone-dot: rgba(0, 229, 255, 0.085);
+      --card-shadow: 4px 4px 0px #03060c;
+      --btn-shadow: 3px 3px 0px #03060c;
+
+      --font-heading: 'Space Grotesk', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      --font-body: 'Plus Jakarta Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    /* Clean High-Contrast Editorial Light Mode */
+    [data-theme="light"] {
+      --bg-outer: #e2e8f0;
+      --bg-primary: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-inset: #f1f5f9;
+      --bg-hover: #e2e8f0;
+      --bg-bar: rgba(255, 255, 255, 0.96);
+      --bg-modal: rgba(248, 250, 252, 0.97);
+
+      --bg-soft-blue: rgba(37, 99, 235, 0.10);
+      --bg-soft-cyan: rgba(2, 132, 199, 0.10);
+      --bg-soft-red: rgba(220, 38, 38, 0.09);
+      --bg-soft-green: rgba(5, 150, 105, 0.10);
+      --bg-soft-amber: rgba(217, 119, 6, 0.11);
+
+      --text-main: #0f172a;
+      --text-body: #1e293b;
+      --text-muted: #475569;
+      --text-cyan-hi: #0284c7;
+      --text-blue-hi: #1d4ed8;
+      --text-red-hi: #dc2626;
+      --text-green-hi: #047857;
+      --text-amber-hi: #b45309;
+
+      --accent-blue: #2563eb;
+      --accent-cyan: #0284c7;
+      --accent-red: #dc2626;
+      --accent-green: #059669;
+      --accent-amber: #d97706;
+
+      --border-line: rgba(15, 23, 42, 0.16);
+      --card-border: #0f172a;
+      --ink-black: #0f172a;
+      --halftone-dot: rgba(37, 99, 235, 0.09);
+      --card-shadow: 4px 4px 0px #0f172a;
+      --btn-shadow: 2px 2px 0px #0f172a;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background-color: var(--bg-outer);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.24s ease, color 0.24s ease;
+    }
+
+    /* =========================================================================
+       2. DESKTOP 1280x720 AUTO-SCALING VIEWPORT & STAGE
+       ========================================================================= */
+    #viewport {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 12% 14%, rgba(59, 130, 246, 0.14), transparent 44%),
+        radial-gradient(circle at 88% 86%, rgba(255, 71, 87, 0.12), transparent 44%),
+        var(--bg-outer);
+    }
+
+    #prog {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      width: 7.69%;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan), var(--accent-red));
+      z-index: 900;
+      transition: width 0.3s ease;
+    }
+
+    #stage {
+      width: 1280px;
+      height: 720px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform-origin: center center;
+      background-color: var(--bg-primary);
+      border: 2px solid var(--card-border);
+      box-shadow: 0 24px 72px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      transition: background-color 0.24s ease, border-color 0.24s ease;
+    }
+
+    /* Subtle graphic halftone dot background texture */
+    #stage::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(var(--halftone-dot) 1.35px, transparent 1.35px);
+      background-size: 16px 16px;
+      mask-image: radial-gradient(circle at 85% 15%, black 0%, transparent 52%);
+      -webkit-mask-image: radial-gradient(circle at 85% 15%, black 0%, transparent 52%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      width: 1280px;
+      height: 720px;
+      padding: 24px 42px 70px 42px;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(18px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      z-index: 1;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(0);
+      z-index: 10;
+    }
+
+    /* =========================================================================
+       3. TYPOGRAPHY & SHARED GRAPHIC-COMIC COMPONENTS
+       ========================================================================= */
+    .slide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 18px;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border-line);
+      flex-shrink: 0;
+    }
+
+    .section-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 11px;
+      border-radius: 6px;
+      font-family: var(--font-heading);
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border: 2px solid var(--ink-black);
+      box-shadow: 2px 2px 0px var(--ink-black);
+      background: var(--accent-blue);
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+    .section-pill.red { background: var(--accent-red); color: #ffffff; }
+    .section-pill.cyan { background: var(--accent-cyan); color: #03060c; }
+    .section-pill.green { background: var(--accent-green); color: #03060c; }
+    .section-pill.amber { background: var(--accent-amber); color: #03060c; }
+
+    .slide-num-badge {
+      padding: 6px 13px;
+      border-radius: 8px;
+      background: var(--bg-surface);
+      border: 2px solid var(--card-border);
+      box-shadow: 3px 3px 0px var(--ink-black);
+      font-family: var(--font-heading);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: var(--font-heading);
+      color: var(--text-main);
+      line-height: 1.12;
+      letter-spacing: -0.015em;
+    }
+
+    h2.slide-title {
+      font-size: 30px;
+      font-weight: 700;
+    }
+
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--bg-surface);
+      border: 2px solid var(--card-border);
+      border-radius: 14px;
+      box-shadow: var(--card-shadow);
+      padding: 16px 19px;
+      position: relative;
+      transition: transform 0.16s ease, border-color 0.16s ease, background-color 0.24s ease;
+    }
+    .card.blue-edge { border-color: var(--accent-blue); }
+    .card.cyan-edge { border-color: var(--accent-cyan); }
+    .card.red-edge { border-color: var(--accent-red); }
+    .card.green-edge { border-color: var(--accent-green); }
+    .card.amber-edge { border-color: var(--accent-amber); }
+
+    .inset-box {
+      background: var(--bg-inset);
+      border: 1.5px solid var(--border-line);
+      border-radius: 10px;
+      padding: 11px 14px;
+    }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .grid-12 { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+    .col-5 { grid-column: span 5; }
+    .col-6 { grid-column: span 6; }
+    .col-7 { grid-column: span 7; }
+
+    .clean-list {
+      padding-left: 19px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 14.8px;
+      line-height: 1.48;
+      color: var(--text-body);
+    }
+    .clean-list li strong { color: var(--text-main); }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 8px 15px;
+      border-radius: 9px;
+      border: 2px solid var(--ink-black);
+      box-shadow: var(--btn-shadow);
+      font-family: var(--font-heading);
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      background: var(--bg-inset);
+      color: var(--text-main);
+      text-decoration: none;
+      transition: transform 0.12s ease, background-color 0.2s ease, color 0.2s ease;
+    }
+    .btn:hover:not(:disabled) { transform: translate(-1px, -1px); }
+    .btn:active:not(:disabled) { transform: translate(1px, 1px); }
+    .btn:disabled { opacity: 0.42; cursor: not-allowed; }
+    .btn-blue { background: var(--accent-blue); color: #ffffff; }
+    .btn-red { background: var(--accent-red); color: #ffffff; }
+    .btn-cyan { background: var(--accent-cyan); color: #03060c; }
+    .btn-green { background: var(--accent-green); color: #03060c; }
+    .btn-amber { background: var(--accent-amber); color: #03060c; }
+    .btn-ghost { background: var(--bg-inset); color: var(--text-main); border-color: var(--card-border); }
+    .btn-ghost:hover:not(:disabled) { background: var(--bg-hover); }
+
+    /* Direct Verified Evidence Link Pills */
+    .cite-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 13px;
+      border-radius: 999px;
+      background: var(--bg-soft-blue);
+      border: 1.5px solid var(--accent-blue);
+      color: var(--text-blue-hi);
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.16s ease;
+    }
+    .cite-link:hover {
+      background: var(--accent-blue);
+      color: #ffffff;
+    }
+    .cite-link.red {
+      background: var(--bg-soft-red);
+      border-color: var(--accent-red);
+      color: var(--text-red-hi);
+    }
+    .cite-link.red:hover {
+      background: var(--accent-red);
+      color: #ffffff;
+    }
+
+    /* Photographic Frame with Styled Fallback Support */
+    .photo-box {
+      position: relative;
+      width: 100%;
+      border-radius: 11px;
+      overflow: hidden;
+      border: 2px solid var(--card-border);
+      background: var(--bg-inset);
+    }
+    .photo-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .photo-fallback-box {
+      width: 100%;
+      height: 100%;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 6px;
+      background: linear-gradient(135deg, var(--bg-soft-blue), var(--bg-soft-red));
+      color: var(--text-main);
+      font-family: var(--font-heading);
+      font-size: 13.5px;
+      font-weight: 700;
+    }
+    
+    .photo-fallback {
+      display: none;
+      width: 100%;
+      height: 100%;
+      padding: 12px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 4px;
+      background: linear-gradient(135deg, var(--bg-soft-blue), var(--bg-soft-red));
+      color: var(--text-main);
+      font-family: var(--font-heading);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .photo-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 5px 10px;
+      background: rgba(7, 10, 16, 0.82);
+      color: #f0f6fc;
+      font-size: 11.5px;
+      font-weight: 600;
+    }
+
+    /* =========================================================================
+       4. SLIDE 1 GRAPHIC-COMIC HERO & 4 TEAM CARDS
+       ========================================================================= */
+    .s1-top-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1.5px solid var(--border-line);
+      flex-shrink: 0;
+    }
+
+    .s1-hero-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 0.92fr;
+      gap: 24px;
+      align-items: center;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .s1-headline {
+      font-family: var(--font-heading);
+      font-size: 39px;
+      font-weight: 700;
+      line-height: 1.09;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: var(--text-main);
+      margin: 10px 0 14px 0;
+    }
+
+    .s1-tagline-pill {
+      display: inline-block;
+      padding: 10px 18px;
+      border-radius: 12px;
+      background: var(--bg-soft-blue);
+      border: 2px solid var(--accent-blue);
+      box-shadow: 3px 3px 0px var(--ink-black);
+      font-size: 15.5px;
+      font-weight: 700;
+      font-style: italic;
+      color: var(--text-main);
+    }
+
+    .s1-graphic-panel {
+      height: 100%;
+      max-height: 290px;
+      border-radius: 18px;
+      background: var(--bg-surface);
+      border: 2.5px dashed var(--accent-blue);
+      box-shadow: 6px 6px 0px var(--ink-black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .roster-card {
+      background: var(--bg-surface);
+      border: 2px solid var(--card-border);
+      border-radius: 13px;
+      box-shadow: var(--card-shadow);
+      padding: 12px 13px;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+    .roster-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
+      border: 2px solid var(--accent-cyan);
+      overflow: hidden;
+      background: var(--bg-soft-cyan);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .roster-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
+      display: block;
+    }
+
+    /* =========================================================================
+       5. SLIDE-SPECIFIC INTERACTIVE WIDGETS
+       ========================================================================= */
+
+    /* Slide 2: Live Audience Poll */
+    .poll-btn {
+      width: 100%;
+      padding: 12px 15px;
+      border-radius: 12px;
+      border: 2px solid var(--card-border);
+      background: var(--bg-inset);
+      color: var(--text-main);
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      transition: all 0.16s ease;
+    }
+    .poll-btn:hover {
+      border-color: var(--accent-cyan);
+      background: var(--bg-soft-cyan);
+    }
+    .bar-track {
+      width: 100%;
+      height: 11px;
+      background: var(--bg-primary);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid var(--border-line);
+    }
+    .bar-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      transition: width 0.35s ease;
+    }
+
+    /* Slide 3 & 7: 3D Flip Cards */
+    .flip-scene {
+      perspective: 1100px;
+      cursor: pointer;
+    }
+    .flip-card {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.52s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .flip-card.flipped { transform: rotateY(180deg); }
+    .flip-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 14px;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 2px solid var(--card-border);
+      box-shadow: var(--card-shadow);
+      background: var(--bg-surface);
+    }
+    .flip-back {
+      transform: rotateY(180deg);
+      background: var(--bg-inset);
+    }
+    .flip-face.blue-card { border-color: var(--accent-blue); }
+    .flip-face.red-card { border-color: var(--accent-red); }
+    .flip-face.amber-card { border-color: var(--accent-amber); }
+    .flip-face.green-card { border-color: var(--accent-green); }
+
+    /* Filter Pills */
+    .pill-btn {
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 2px solid var(--card-border);
+      background: var(--bg-inset);
+      color: var(--text-muted);
+      font-family: var(--font-heading);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.16s ease;
+    }
+    .pill-btn:hover { color: var(--text-main); border-color: var(--accent-blue); }
+    .pill-btn.active {
+      background: var(--accent-red);
+      border-color: var(--ink-black);
+      color: #ffffff;
+      box-shadow: 2px 2px 0px var(--ink-black);
+    }
+    .pill-btn.blue-active.active {
+      background: var(--accent-blue);
+      color: #ffffff;
+    }
+
+    /* Slide 4: 2x2 Stakeholder Photo Cards & Decade Stepper */
+    .who-card {
+      background: var(--bg-surface);
+      border: 2px solid var(--card-border);
+      border-radius: 13px;
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .who-thumb {
+      width: 100%;
+      height: 82px;
+      position: relative;
+      background: var(--bg-inset);
+      border-bottom: 2px solid var(--border-line);
+      overflow: hidden;
+    }
+    .who-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .who-body {
+      padding: 10px 12px 11px 12px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .era-tab {
+      flex: 1;
+      padding: 10px 12px;
+      border-radius: 11px;
+      border: 2px solid var(--card-border);
+      background: var(--bg-inset);
+      color: var(--text-muted);
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+    .era-tab:hover { border-color: var(--accent-blue); color: var(--text-main); }
+    .era-tab.active {
+      background: var(--bg-soft-blue);
+      border-color: var(--accent-cyan);
+      color: var(--text-main);
+      box-shadow: 3px 3px 0px var(--ink-black);
+    }
+
+    /* Slide 8: Optimized Ethics Tabs, Balanced Sub-Cards & Table */
+    .tab-btn {
+      padding: 9px 17px;
+      border-radius: 10px;
+      border: 2px solid var(--card-border);
+      background: var(--bg-inset);
+      color: var(--text-muted);
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+    .tab-btn:hover { color: var(--text-main); border-color: var(--accent-blue); }
+    .tab-btn.active {
+      background: var(--accent-blue);
+      border-color: var(--ink-black);
+      color: #ffffff;
+      box-shadow: 3px 3px 0px var(--ink-black);
+    }
+
+    #eth-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding: 30px 34px;
+      gap: 22px;
+      min-height: 0;
+    }
+
+    .eth-cards-grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: stretch;
+      min-height: 0;
+    }
+
+    .eth-subcard {
+      background: var(--bg-inset);
+      border: 1.5px solid var(--border-line);
+      border-radius: 12px;
+      padding: 28px 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .eth-subcard-label {
+      font-family: var(--font-heading);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .eth-subcard-text {
+      font-size: 19px;
+      line-height: 1.65;
+      color: var(--text-main);
+    }
+
+    .eth-table-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 0;
+    }
+
+    .eth-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    .eth-table th, .eth-table td {
+      padding: 18px 20px;
+      border: 1.5px solid var(--card-border);
+      text-align: left;
+      color: var(--text-body);
+    }
+    .eth-table thead tr { background: var(--bg-inset); }
+    .eth-table th { color: var(--text-main); font-family: var(--font-heading); font-weight: 700; font-size: 16.5px; }
+
+    /* Slide 9: Accordion */
+    .acc-item {
+      border: 2px solid var(--card-border);
+      border-radius: 11px;
+      background: var(--bg-surface);
+      overflow: hidden;
+      margin-bottom: 7px;
+      box-shadow: 3px 3px 0px var(--ink-black);
+    }
+    .acc-item.open { border-color: var(--accent-blue); }
+    .acc-item.red-acc.open { border-color: var(--accent-red); }
+    .acc-head {
+      width: 100%;
+      padding: 8px 14px;
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      font-family: var(--font-heading);
+      font-size: 14.2px;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      text-align: left;
+    }
+    .acc-arrow {
+      font-size: 15px;
+      color: var(--accent-cyan);
+      transition: transform 0.22s ease;
+      flex-shrink: 0;
+    }
+    .acc-item.red-acc .acc-arrow { color: var(--accent-red); }
+    .acc-item.open .acc-arrow { transform: rotate(180deg); }
+    .acc-body {
+      max-height: 0;
+      overflow: hidden;
+      padding: 0 14px;
+      font-size: 13.4px;
+      line-height: 1.44;
+      color: var(--text-body);
+      border-top: 1px solid transparent;
+      transition: max-height 0.28s ease, padding 0.28s ease;
+    }
+    .acc-item.open .acc-body {
+      max-height: 190px;
+      padding: 7px 14px 9px 14px;
+      border-top-color: var(--border-line);
+    }
+
+    /* Slide 10: Working IT vs Non-IT Solutions Filter Grid */
+    .sol-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      flex: 1;
+      align-items: stretch;
+      min-height: 0;
+    }
+    .sol-grid.single-col {
+      grid-template-columns: 1fr;
+    }
+    .sol-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .sol-hidden {
+      display: none !important;
+    }
+
+    /* Slide 11: Live Audio Spectrogram */
+    #spectroCanvas {
+      width: 100%;
+      height: 146px;
+      display: block;
+      border-radius: 10px;
+      border: 2px solid var(--border-line);
+    }
+    .redact-tag {
+      display: inline-block;
+      padding: 1px 7px;
+      border-radius: 5px;
+      background: var(--accent-red);
+      color: #ffffff;
+      font-weight: 800;
+      animation: pulseTag 0.42s infinite alternate;
+    }
+    @keyframes pulseTag {
+      from { transform: scale(1); }
+      to { transform: scale(1.06); box-shadow: 0 0 10px rgba(255, 71, 87, 0.75); }
+    }
+
+    /* Slide 13: Clean Q&A & Collapsible Backup Questions */
+    .backup-panel {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .backup-panel.open {
+      display: flex;
+    }
+    .qa-answer {
+      display: none;
+      margin-top: 9px;
+      padding: 10px 12px;
+      border-radius: 9px;
+      background: var(--bg-soft-green);
+      border-left: 4px solid var(--accent-green);
+      font-size: 13.5px;
+      line-height: 1.48;
+      color: var(--text-main);
+    }
+    .qa-answer.open { display: block; }
+
+    /* =========================================================================
+       6. BOTTOM DOCK (#bar), SPEAKER NOTES (#notes), OVERVIEW (#over), TOAST
+       ========================================================================= */
+    #bar {
+      position: fixed;
+      bottom: 11px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      background: var(--bg-bar);
+      backdrop-filter: blur(10px);
+      border: 2px solid var(--card-border);
+      border-radius: 13px;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.38), 3px 3px 0px var(--ink-black);
+      z-index: 800;
+    }
+
+    #bar button {
+      background: var(--bg-inset);
+      color: var(--text-main);
+      border: 1.5px solid var(--card-border);
+      border-radius: 8px;
+      padding: 6px 11px;
+      font-family: var(--font-heading);
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+    #bar button:hover:not(:disabled) {
+      background: var(--accent-blue);
+      border-color: var(--ink-black);
+      color: #ffffff;
+    }
+    #bar button:disabled { opacity: 0.36; cursor: not-allowed; }
+    #bar button.active-tool {
+      background: var(--accent-red);
+      border-color: var(--ink-black);
+      color: #ffffff;
+    }
+    #cnt {
+      min-width: 60px;
+      text-align: center;
+      font-family: var(--font-heading);
+      font-size: 15.5px;
+      font-weight: 700;
+      color: var(--text-cyan-hi);
+    }
+
+    #notes {
+      position: fixed;
+      bottom: 64px;
+      left: 50%;
+      transform: translateX(-50%) translateY(14px);
+      width: min(880px, 94vw);
+      max-height: 46vh;
+      overflow-y: auto;
+      background: var(--bg-surface);
+      border: 2.5px solid var(--accent-amber);
+      border-radius: 14px;
+      padding: 15px 18px;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.48), 5px 5px 0px var(--ink-black);
+      z-index: 850;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s ease, transform 0.22s ease;
+    }
+    #notes.open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    #over {
+      position: fixed;
+      inset: 0;
+      background: var(--bg-modal);
+      backdrop-filter: blur(8px);
+      z-index: 950;
+      display: none;
+      flex-direction: column;
+      padding: 26px 34px;
+      overflow-y: auto;
+    }
+    #over.open { display: flex; }
+    .over-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(248px, 1fr));
+      gap: 14px;
+      max-width: 1200px;
+      width: 100%;
+      margin: 16px auto 0 auto;
+    }
+    .thumb-card {
+      background: var(--bg-surface);
+      border: 2px solid var(--card-border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      cursor: pointer;
+      text-align: left;
+      color: var(--text-main);
+      box-shadow: 3px 3px 0px var(--ink-black);
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+    .thumb-card:hover { transform: translateY(-2px); border-color: var(--accent-cyan); }
+    .thumb-card.current { border-color: var(--accent-red); background: var(--bg-soft-red); }
+
+    #toast {
+      position: fixed;
+      top: 16px;
+      right: 18px;
+      max-width: min(440px, 90vw);
+      padding: 10px 16px;
+      border-radius: 10px;
+      background: var(--bg-surface);
+      border: 2px solid var(--accent-cyan);
+      color: var(--text-main);
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.4;
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35), 3px 3px 0px var(--ink-black);
+      z-index: 1000;
+      opacity: 0;
+      transform: translateY(-10px);
+      pointer-events: none;
+      transition: opacity 0.22s ease, transform 0.22s ease;
+    }
+    #toast.show { opacity: 1; transform: translateY(0); }
+
+    /* =========================================================================
+       7. MOBILE RESPONSIVE MODE (SCREEN ONLY <= 900px)
+       ========================================================================= */
+    @media screen and (max-width: 900px) {
+      html, body {
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: auto;
+      }
+      #viewport {
+        width: 100%;
+        height: auto;
+        min-height: 100vh;
+        overflow: visible;
+      }
+      #stage {
+        position: static;
+        left: auto;
+        top: auto;
+        width: 100%;
+        height: auto;
+        min-height: 100vh;
+        transform: none !important;
+        border: none;
+        box-shadow: none;
+        overflow: visible;
+      }
+      .slide {
+        position: relative;
+        width: 100%;
+        height: auto;
+        min-height: calc(100vh - 68px);
+        padding: 18px 16px 104px 16px;
+        display: none;
+        opacity: 1;
+        transform: none;
+        pointer-events: auto;
+      }
+      .slide.active {
+        display: flex;
+      }
+      .slide-header, .s1-top-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      .s1-hero-grid {
+        grid-template-columns: 1fr;
+      }
+      .s1-headline {
+        font-size: 27px;
+      }
+      h2.slide-title {
+        font-size: 23px;
+      }
+      .grid-2, .grid-3, .grid-4, .grid-12, .sol-grid, .eth-cards-grid {
+        grid-template-columns: 1fr !important;
+      }
+      .col-5, .col-6, .col-7 {
+        grid-column: span 1 !important;
+      }
+      #eth-panel {
+        padding: 18px 16px;
+        gap: 16px;
+      }
+      .eth-subcard {
+        padding: 18px 16px;
+      }
+      .eth-subcard-text {
+        font-size: 16px;
+      }
+      .eth-table th, .eth-table td {
+        padding: 10px 12px;
+        font-size: 14px;
+      }
+      .clean-list {
+        font-size: 15px;
+      }
+      .flip-scene {
+        min-height: 235px;
+        height: auto !important;
+      }
+      .flip-card {
+        min-height: 235px;
+      }
+      .flip-face {
+        position: relative;
+        min-height: 235px;
+      }
+      .flip-face.flip-back {
+        position: absolute;
+        inset: 0;
+      }
+      .swat-grid {
+        height: auto !important;
+      }
+      .era-tabs-wrap {
+        flex-direction: column;
+      }
+      .tab-row-wrap {
+        flex-wrap: wrap;
+      }
+      #bar {
+        width: 96vw;
+        bottom: 8px;
+        padding: 6px 8px;
+        gap: 5px;
+        overflow-x: auto;
+        justify-content: flex-start;
+      }
+      #bar button {
+        padding: 8px 11px;
+        font-size: 12.5px;
+        min-height: 38px;
+      }
+      #notes {
+        bottom: 62px;
+        width: 95vw;
+        padding: 14px;
+      }
+      #over {
+        padding: 18px 14px;
+      }
+      .photo-box {
+        height: 175px !important;
+      }
+      .who-thumb {
+        height: 110px;
+      }
+      .btn {
+        min-height: 40px;
+      }
+    }
+
+    /* =========================================================================
+       8. EXPORT TO PDF - EXACT 1280x720 (16:9) WIDESCREEN LIGHT MODE
+       ========================================================================= */
+    @page {
+      size: 1280px 720px;
+      margin: 0;
+    }
+
+    @media print {
+      :root,
+      [data-theme="dark"],
+      [data-theme="light"] {
+        --bg-outer: #ffffff !important;
+        --bg-primary: #ffffff !important;
+        --bg-surface: #f8fafc !important;
+        --bg-inset: #f1f5f9 !important;
+        --bg-hover: #e2e8f0 !important;
+        --bg-soft-blue: #eff6ff !important;
+        --bg-soft-cyan: #f0f9ff !important;
+        --bg-soft-red: #fef2f2 !important;
+        --bg-soft-green: #ecfdf5 !important;
+        --bg-soft-amber: #fffbeb !important;
+
+        --text-main: #0f172a !important;
+        --text-body: #1e293b !important;
+        --text-muted: #475569 !important;
+        --text-cyan-hi: #0284c7 !important;
+        --text-blue-hi: #1d4ed8 !important;
+        --text-red-hi: #b91c1c !important;
+        --text-green-hi: #047857 !important;
+        --text-amber-hi: #b45309 !important;
+
+        --accent-blue: #2563eb !important;
+        --accent-cyan: #0284c7 !important;
+        --accent-red: #dc2626 !important;
+        --accent-green: #059669 !important;
+        --accent-amber: #d97706 !important;
+
+        --border-line: #cbd5e1 !important;
+        --card-border: #0f172a !important;
+        --ink-black: #0f172a !important;
+        --card-shadow: 3px 3px 0px #0f172a !important;
+      }
+
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      html, body {
+        width: 1280px !important;
+        height: auto !important;
+        overflow: visible !important;
+        background: #ffffff !important;
+        color: #0f172a !important;
+      }
+
+      #bar, #prog, #notes, #over, #toast, .no-print, .era-tabs-wrap {
+        display: none !important;
+      }
+
+      #viewport {
+        width: 1280px !important;
+        height: auto !important;
+        overflow: visible !important;
+        background: #ffffff !important;
+      }
+
+      #stage {
+        position: static !important;
+        left: auto !important;
+        top: auto !important;
+        width: 1280px !important;
+        height: auto !important;
+        transform: none !important;
+        border: none !important;
+        box-shadow: none !important;
+        overflow: visible !important;
+        background: #ffffff !important;
+      }
+
+      #stage::before { display: none !important; }
+
+      .slide {
+        position: relative !important;
+        inset: auto !important;
+        top: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        left: auto !important;
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        transform: none !important;
+        width: 1280px !important;
+        height: 720px !important;
+        padding: 22px 42px 26px 42px !important;
+        background: #ffffff !important;
+        overflow: hidden !important;
+        break-after: page !important;
+        page-break-after: always !important;
+        box-sizing: border-box !important;
+      }
+
+      .slide:last-child {
+        break-after: auto !important;
+        page-break-after: auto !important;
+      }
+
+      /* Always expand all accordions cleanly in PDF */
+      .acc-arrow { display: none !important; }
+      .acc-body {
+        max-height: none !important;
+        padding: 7px 14px 9px 14px !important;
+        border-top: 1px solid #cbd5e1 !important;
+      }
+
+      /* Keep flip cards crisp and full-height front-facing in PDF */
+      .flip-scene { perspective: none !important; }
+      .flip-card {
+        transform: none !important;
+        transform-style: flat !important;
+        height: 100% !important;
+      }
+      .flip-face {
+        position: relative !important;
+        inset: auto !important;
+        height: 100% !important;
+        backface-visibility: visible !important;
+        -webkit-backface-visibility: visible !important;
+      }
+      .flip-back { display: none !important; }
+
+      /* Force Slide 10 to show BOTH IT & Non-IT columns in PDF */
+      .sol-grid, .sol-grid.single-col {
+        grid-template-columns: 1fr 1fr !important;
+      }
+      .sol-card, .sol-hidden {
+        display: flex !important;
+      }
+
+      /* Keep Slide 13 crisp as clean closing Q&A slide in PDF */
+      #backup-qa-panel { display: none !important; }
+      #qa-clean-hero {
+        flex: 1 !important;
+        padding: 26px !important;
+        gap: 16px !important;
+      }
+      #qa-clean-hero h3 { font-size: 40px !important; }
+      #qa-clean-hero p { display: block !important; }
+    }
+  
+  </style>
+
+  <!-- Unified image fallback handlers (supports both v1 inline-label and v2 sibling-fallback patterns) -->
+  <script>
+    function handleAvatarError(img, initials, bgColor) {
+      if (!img || !img.parentElement) return;
+      const parent = img.parentElement;
+      img.style.display = 'none';
+
+      const next = img.nextElementSibling;
+      if (next && next.classList.contains('roster-fallback')) {
+        next.style.display = 'flex';
+        return;
+      }
+
+      const safeInitials = initials || 'TM';
+      const safeColor = bgColor || '#3b82f6';
+      if (!parent.querySelector('.avatar-fallback-el')) {
+        const div = document.createElement('div');
+        div.className = 'avatar-fallback-el';
+        div.style.cssText =
+          'width:100%;height:100%;display:flex;align-items:center;justify-content:center;' +
+          'font-family:var(--font-heading);font-size:21px;font-weight:700;letter-spacing:0.04em;' +
+          'color:#ffffff;background:' + safeColor + ';';
+        div.textContent = safeInitials;
+        parent.appendChild(div);
+      }
+    }
+
+    function handlePhotoError(img, label) {
+      if (!img || !img.parentElement) return;
+      const parent = img.parentElement;
+      img.style.display = 'none';
+
+      const next = img.nextElementSibling;
+      if (next && next.classList.contains('photo-fallback')) {
+        next.style.display = 'flex';
+        return;
+      }
+
+      const safeLabel = label || 'Visual Evidence';
+      if (!parent.querySelector('.photo-fallback-box')) {
+        const box = document.createElement('div');
+        box.className = 'photo-fallback-box';
+        box.innerHTML =
+          '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+          '<rect x="3" y="3" width="18" height="18" rx="3"></rect>' +
+          '<circle cx="8.5" cy="8.5" r="1.5"></circle>' +
+          '<polyline points="21 15 16 10 5 21"></polyline>' +
+          '</svg>' +
+          '<span>' + safeLabel + '</span>';
+        parent.insertBefore(box, parent.firstChild);
+      }
+    }
+  </script>
+</head>
+<body>
+  <!-- Top Progress Bar -->
+  <div id="prog"></div>
+
+  <!-- Friendly Notification Toast -->
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Main Viewport -->
+  <div id="viewport">
+    <div id="stage">
+
+      <!-- =================================================================
+           SLIDE 1: GRAPHIC-COMIC HERO & 4 TEAM MEMBERS WITH PHOTO FRAMES
+           ================================================================= -->
+      <section class="slide active" data-slide="1" data-title="Title &amp; Team">
+        <!-- Top Strip -->
+        <div class="s1-top-meta">
+          <div>
+            <div style="font-family:var(--font-heading); font-size:12.5px; font-weight:700; letter-spacing:0.08em; color:var(--text-cyan-hi); text-transform:uppercase;">
+              ICT652 - ETHICAL, SOCIAL &amp; PROFESSIONAL ISSUES IN ICT - ASSIGNMENT 1 (20%)
+            </div>
+            <div style="font-size:14px; font-weight:600; color:var(--text-muted); margin-top:2px;">
+              Universiti Teknologi MARA (UiTM)
+            </div>
+          </div>
+          <span class="slide-num-badge" style="color: var(--text-main); border-color: var(--accent-cyan);">
+            CASE STUDY PRESENTATION
+          </span>
+        </div>
+
+        <!-- 2-Column Hero Layout -->
+        <div class="s1-hero-grid">
+          <!-- Left Hero -->
+          <div>
+            <div style="display:flex; flex-wrap:wrap; gap:8px;">
+              <span class="section-pill red" style="margin:0;">@#!!! DIGITAL CRISIS</span>
+              <span class="section-pill" style="margin:0;">ETHICAL CASE STUDY</span>
+            </div>
+
+            <h1 class="s1-headline">
+              TOXIC BEHAVIOR &amp; <span style="color:var(--accent-red);">HARASSMENT</span> IN MULTIPLAYER ONLINE GAMES:
+              <span style="color:var(--text-cyan-hi);">AN ETHICAL ANALYSIS</span> OF PLAYER SAFETY
+            </h1>
+
+            <div class="s1-tagline-pill">
+              &ldquo;Balancing Competitive Play, Freedom of Expression and Human Dignity.&rdquo;
+            </div>
+          </div>
+
+          <!-- Right Hero: Dark Dashed-Border Comic Art Box with Inline SVG -->
+          <div class="s1-graphic-panel">
+            <svg viewBox="0 0 420 270" width="100%" height="100%" role="img" aria-label="Comic graphic showing red toxic speech bubble, broken heart, cyan headset with green check shield and SAFE PLAY badge">
+              <!-- Subtle Background Glows -->
+              <circle cx="96" cy="70" r="64" fill="var(--bg-soft-red)" />
+              <circle cx="238" cy="185" r="82" fill="var(--bg-soft-cyan)" />
+
+              <!-- Red "@#!!!" Speech Bubble -->
+              <g transform="translate(26, 22)">
+                <polygon points="8,8 164,2 156,74 74,76 52,102 54,76 12,74" fill="var(--ink-black)" transform="translate(5, 5)" />
+                <polygon points="8,8 164,2 156,74 74,76 52,102 54,76 12,74" fill="var(--accent-red)" stroke="var(--ink-black)" stroke-width="3.5" stroke-linejoin="round" />
+                <text x="84" y="50" text-anchor="middle" fill="#ffffff" font-family="Space Grotesk, Segoe UI, sans-serif" font-weight="700" font-size="30" letter-spacing="1">@#!!!</text>
+              </g>
+
+              <!-- Broken Heart Outline -->
+              <g transform="translate(278, 22)">
+                <path d="M52 24 C42 8 18 10 14 30 C10 52 34 68 52 84 C70 68 94 52 90 30 C86 10 62 8 52 24 Z" fill="var(--bg-soft-red)" stroke="var(--accent-red)" stroke-width="5" stroke-linejoin="round" />
+                <polyline points="52,24 44,44 58,54 49,78" fill="none" stroke="var(--accent-red)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
+              </g>
+
+              <!-- Cyan Headset with Shield & Green Check -->
+              <g transform="translate(64, 118)">
+                <path d="M22 72 C22 14 148 14 148 72" fill="none" stroke="var(--accent-cyan)" stroke-width="7.5" stroke-linecap="round" />
+                <path d="M32 72 C32 26 138 26 138 72" fill="none" stroke="var(--accent-blue)" stroke-width="3.5" stroke-linecap="round" opacity="0.7" />
+                <rect x="6" y="64" width="24" height="52" rx="9" fill="var(--accent-blue)" stroke="var(--ink-black)" stroke-width="3" />
+                <rect x="140" y="64" width="24" height="52" rx="9" fill="var(--accent-blue)" stroke="var(--ink-black)" stroke-width="3" />
+                <path d="M20 114 C24 134 52 138 78 134" fill="none" stroke="var(--text-main)" stroke-width="4.5" stroke-linecap="round" />
+                <circle cx="82" cy="133" r="6" fill="var(--accent-red)" stroke="var(--ink-black)" stroke-width="2" />
+
+                <path d="M85 44 L122 57 L122 86 C122 108 105 122 85 129 C65 122 48 108 48 86 L48 57 Z" fill="var(--bg-soft-green)" stroke="var(--accent-cyan)" stroke-width="4.5" stroke-linejoin="round" />
+                <polyline points="68,86 80,99 104,72" fill="none" stroke="var(--accent-green)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+              </g>
+
+              <!-- Blue "SAFE PLAY" Badge -->
+              <g transform="translate(248, 178)">
+                <rect x="4" y="4" width="144" height="48" rx="10" fill="var(--ink-black)" />
+                <rect x="0" y="0" width="144" height="48" rx="10" fill="var(--accent-blue)" stroke="var(--ink-black)" stroke-width="3" />
+                <text x="72" y="31" text-anchor="middle" fill="#ffffff" font-family="Space Grotesk, Segoe UI, sans-serif" font-weight="700" font-size="20" letter-spacing="1.2">SAFE PLAY</text>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Bottom Row: 4 Horizontal Team Cards (NO Slide Assignments) -->
+        <div style="flex-shrink: 0; margin-top: 8px;">
+          <div style="font-family:var(--font-heading); font-size:12px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; color:var(--text-muted); margin-bottom:9px;">
+            TEAM MEMBERS - UNIVERSITI TEKNOLOGI MARA (UiTM)
+          </div>
+          <div class="grid-4">
+            <!-- Member 1 (Cyan) -->
+            <div class="roster-card" style="border-color: var(--accent-cyan);">
+              <div class="roster-avatar" style="border-color: var(--accent-cyan);">
+                <img src="./images/amir.jpeg" alt="Muhammad Amir Hakim Bin Noorzah" onerror="handleAvatarError(this, 'AH', '#0284c7')" />
+              </div>
+              <div style="min-width:0;">
+                <span class="section-pill cyan" style="margin:0 0 5px 0; padding:2px 8px; font-size:10px;">MEMBER 1</span>
+                <div style="font-size:12.5px; font-weight:800; line-height:1.25; color:var(--text-main);">MUHAMMAD AMIR HAKIM BIN NOORZAH</div>
+                <div style="font-size:11.5px; font-weight:700; color:var(--text-cyan-hi); margin-top:3px;">ID: 2025159215</div>
+              </div>
+            </div>
+
+            <!-- Member 2 (Red) -->
+            <div class="roster-card" style="border-color: var(--accent-red);">
+              <div class="roster-avatar" style="border-color: var(--accent-red); background: var(--bg-soft-red);">
+                <img src="./images/azib.jpeg" alt="Muhammad Amir Azib Bin Masri" onerror="handleAvatarError(this, 'AA', '#dc2626')" />
+              </div>
+              <div style="min-width:0;">
+                <span class="section-pill red" style="margin:0 0 5px 0; padding:2px 8px; font-size:10px;">MEMBER 2</span>
+                <div style="font-size:12.5px; font-weight:800; line-height:1.25; color:var(--text-main);">MUHAMMAD AMIR AZIB BIN MASRI</div>
+                <div style="font-size:11.5px; font-weight:700; color:var(--text-red-hi); margin-top:3px;">ID: 2025101653</div>
+              </div>
+            </div>
+
+            <!-- Member 3 (Blue) -->
+            <div class="roster-card" style="border-color: var(--accent-blue);">
+              <div class="roster-avatar" style="border-color: var(--accent-blue); background: var(--bg-soft-blue);">
+                <img src="./images/daniel.jpeg" alt="Muhammad Daniel Farhan Bin Ahmad Yunus" onerror="handleAvatarError(this, 'DF', '#2563eb')" />
+              </div>
+              <div style="min-width:0;">
+                <span class="section-pill" style="margin:0 0 5px 0; padding:2px 8px; font-size:10px;">MEMBER 3</span>
+                <div style="font-size:12.5px; font-weight:800; line-height:1.25; color:var(--text-main);">MUHAMMAD DANIEL FARHAN BIN AHMAD YUNUS</div>
+                <div style="font-size:11.5px; font-weight:700; color:var(--text-blue-hi); margin-top:3px;">ID: 2025119525</div>
+              </div>
+            </div>
+
+            <!-- Member 4 (Green) -->
+            <div class="roster-card" style="border-color: var(--accent-green);">
+              <div class="roster-avatar" style="border-color: var(--accent-green); background: var(--bg-soft-green);">
+                <img src="./images/eqhlas.jpeg" alt="Eqhlas Fiddeen Bin Eddie Fuad" onerror="handleAvatarError(this, 'EF', '#059669')" />
+              </div>
+              <div style="min-width:0;">
+                <span class="section-pill green" style="margin:0 0 5px 0; padding:2px 8px; font-size:10px;">MEMBER 4</span>
+                <div style="font-size:12.5px; font-weight:800; line-height:1.25; color:var(--text-main);">EQHLAS FIDDEEN BIN EDDIE FUAD</div>
+                <div style="font-size:11.5px; font-weight:700; color:var(--text-green-hi); margin-top:3px;">ID: 2025137227</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           SLIDE 2: ISSUE BACKGROUND & LIVE AUDIENCE POLL
+           ================================================================= -->
+      <section class="slide" data-slide="2" data-title="Issue Background &amp; Live Poll">
+        <div class="slide-header">
+          <div>
+            <span class="section-pill">ISSUE BACKGROUND</span>
+            <h2 class="slide-title">How Big Is Gaming Toxicity?</h2>
+          </div>
+          <span class="slide-num-badge">SLIDE 02 / 13</span>
+        </div>
+
+        <div class="slide-body grid-12" style="align-items: stretch;">
+          <!-- Left: Interactive Live Audience Poll -->
+          <div class="col-6 card cyan-edge" style="display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <span class="section-pill cyan" style="margin:0;">LIVE CLASS POLL</span>
+                <span id="poll-total" style="font-family:var(--font-heading); font-size:14px; font-weight:700; color:var(--text-cyan-hi);">Total Votes: 0</span>
+              </div>
+              <h3 style="font-size: 20px; font-weight: 700; line-height: 1.35; margin-bottom: 15px; color: var(--text-main);">
+                &ldquo;Have you ever muted voice chat or left a match due to harassment?&rdquo;
+              </h3>
+
+              <div style="display:flex; flex-direction:column; gap:11px;">
+                <button class="poll-btn" onclick="votePoll(0)">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:15.5px; font-weight:700;">Yes, often</span>
+                    <span id="poll-stat-0" style="font-size:13.5px; font-weight:700; color:var(--accent-red);">0 votes (0%)</span>
+                  </div>
+                  <div class="bar-track">
+                    <div id="poll-bar-0" class="bar-fill" style="background: var(--accent-red);"></div>
+                  </div>
+                </button>
+
+                <button class="poll-btn" onclick="votePoll(1)">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:15.5px; font-weight:700;">Sometimes</span>
+                    <span id="poll-stat-1" style="font-size:13.5px; font-weight:700; color:var(--text-blue-hi);">0 votes (0%)</span>
+                  </div>
+                  <div class="bar-track">
+                    <div id="poll-bar-1" class="bar-fill" style="background: var(--accent-blue);"></div>
+                  </div>
+                </button>
+
+                <button class="poll-btn" onclick="votePoll(2)">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:15.5px; font-weight:700;">Never</span>
+                    <span id="poll-stat-2" style="font-size:13.5px; font-weight:700; color:var(--accent-green);">0 votes (0%)</span>
+                  </div>
+                  <div class="bar-track">
+                    <div id="poll-bar-2" class="bar-fill" style="background: var(--accent-green);"></div>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <div class="no-print" style="display:flex; justify-content:space-between; align-items:center; padding-top:12px; border-top:1.5px solid var(--border-line); margin-top:12px;">
+              <span style="font-size:12.5px; color:var(--text-muted); font-weight:600;">Click options to count class responses</span>
+              <div style="display:flex; gap:8px;">
+                <button class="btn btn-ghost" onclick="undoPoll()">&#8634; Undo</button>
+                <button class="btn btn-red" onclick="resetPoll()">Reset</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Global Scale Stats (ADL 2022) + Esports Arena Photo + Direct Link -->
+          <div class="col-6" style="display:flex; flex-direction:column; justify-content:space-between; gap:13px;">
+            <div class="photo-box" style="height: 168px;">
+              <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=900&q=80" alt="Competitive esports gaming arena" onerror="handlePhotoError(this, 'Global Multiplayer Esports Arena')" />
+              <div class="photo-caption">Competitive multiplayer arenas connect millions globally - yet toxic abuse is widespread.</div>
+            </div>
+
+            <div class="grid-3" style="gap: 11px;">
+              <div class="card red-edge" style="padding: 12px 10px; text-align:center;">
+                <div style="font-family:var(--font-heading); font-size:34px; font-weight:700; color:var(--accent-red); line-height:1;">80%+</div>
+                <p style="font-size:12px; font-weight:700; color:var(--text-body); margin-top:5px;">online gamers experience harassment</p>
+              </div>
+              <div class="card blue-edge" style="padding: 12px 10px; text-align:center;">
+                <div style="font-family:var(--font-heading); font-size:34px; font-weight:700; color:var(--text-cyan-hi); line-height:1;">77%</div>
+                <p style="font-size:12px; font-weight:700; color:var(--text-body); margin-top:5px;">faced severe threats or stalking</p>
+              </div>
+              <div class="card amber-edge" style="padding: 12px 10px; text-align:center;">
+                <div style="font-family:var(--font-heading); font-size:34px; font-weight:700; color:var(--accent-amber); line-height:1;">1 in 4</div>
+                <p style="font-size:12px; font-weight:700; color:var(--text-body); margin-top:5px;">players avoid or quit toxic games</p>
+              </div>
+            </div>
+
+            <div class="card" style="padding: 13px 16px; display:flex; flex-direction:column; gap:9px;">
+              <p style="font-size:14px; line-height:1.48; color:var(--text-body);">
+                According to the <strong>Anti-Defamation League (ADL)</strong>, harassment in online games is an industry-wide safety crisis rather than isolated bad manners.
+              </p>
+              <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                <a class="cite-link red" href="https://www.adl.org/resources/report/hate-no-game-hate-and-harassment-online-games-2022" target="_blank" rel="noopener noreferrer">
+                  &#128279; ADL Online Games Harassment Report (2022) &#8599;
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           SLIDE 3: 5W1H - WHAT (BANTER VS HARASSMENT FLIP CARDS)
+           ================================================================= -->
+      <section class="slide" data-slide="3" data-title="5W1H (WHAT): Banter vs Toxic Harassment">
+        <div class="slide-header">
+          <div>
+            <span class="section-pill">5W1H - WHAT</span>
+            <h2 class="slide-title">Normal Competitive Banter vs Toxic Harassment</h2>
+          </div>
+          <span class="slide-num-badge">SLIDE 03 / 13</span>
+        </div>
+
+        <div class="slide-body" style="justify-content: space-between;">
+          <!-- Two Large Interactive 3D Flip Cards -->
+          <div class="grid-2" style="height: 288px;">
+            <!-- Blue Flip Card: Normal Competitive Banter -->
+            <div class="flip-scene" onclick="toggleFlip(this)">
+              <div class="flip-card">
+                <div class="flip-face blue-card">
+                  <div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                      <span class="section-pill" style="margin:0;">ACCEPTABLE PLAY</span>
+                      <span class="no-print" style="font-size:12px; font-weight:700; color:var(--text-blue-hi);">Click to Flip &#8635;</span>
+                    </div>
+                    <h3 style="font-size:25px; color:var(--text-blue-hi); margin-bottom:10px;">Normal Competitive Banter</h3>
+                    <ul class="clean-list">
+                      <li>Playful teasing focused only on match skill or score.</li>
+                      <li>Fast tactical callouts to coordinate team moves.</li>
+                      <li>Mutual respect that stops when someone feels uncomfortable.</li>
+                    </ul>
+                  </div>
+                  <div class="inset-box" style="padding:8px 12px; font-size:13.5px; font-weight:700; color:var(--text-blue-hi);">
+                    Boundary: Targets the game avatar - never the real person.
+                  </div>
+                </div>
+                <div class="flip-face flip-back blue-card" style="background: var(--bg-soft-blue);">
+                  <div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                      <span class="section-pill green" style="margin:0;">EXAMPLE</span>
+                      <span style="font-size:12px; font-weight:700; color:var(--text-main);">Click to Flip Back &#8635;</span>
+                    </div>
+                    <div class="inset-box" style="font-size:16.5px; font-weight:700; color:var(--text-main); margin-bottom:12px;">
+                      &ldquo;Nice try on mid lane! Watch the flank next round, GG!&rdquo;
+                    </div>
+                    <p style="font-size:15px; line-height:1.52; color:var(--text-body);">
+                      Keeps energy high while respecting teammates and opponents as human beings.
+                    </p>
+                  </div>
+                  <div class="inset-box" style="padding:8px 12px; font-size:13px; font-weight:700; color:var(--text-green-hi);">
+                    Outcome: Fun rivalry with healthy sportsmanship.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Red Flip Card: Toxic Harassment -->
+            <div class="flip-scene" onclick="toggleFlip(this)">
+              <div class="flip-card">
+                <div class="flip-face red-card">
+                  <div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                      <span class="section-pill red" style="margin:0;">ETHICAL &amp; LEGAL BREACH</span>
+                      <span class="no-print" style="font-size:12px; font-weight:700; color:var(--text-red-hi);">Click to Flip &#8635;</span>
+                    </div>
+                    <h3 style="font-size:25px; color:var(--accent-red); margin-bottom:10px;">Toxic Harassment</h3>
+                    <ul class="clean-list">
+                      <li>Personal attacks on race, gender, religion or identity.</li>
+                      <li>Deliberate sabotage (griefing), stalking or leaking private data.</li>
+                      <li>Real-world threats of violence or encouraging self-harm.</li>
+                    </ul>
+                  </div>
+                  <div class="inset-box" style="padding:8px 12px; font-size:13.5px; font-weight:700; color:var(--text-red-hi);">
+                    Boundary: Attacks real human dignity and personal safety.
+                  </div>
+                </div>
+                <div class="flip-face flip-back red-card" style="background: var(--bg-soft-red);">
+                  <div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                      <span class="section-pill red" style="margin:0;">HARM EXAMPLE</span>
+                      <span style="font-size:12px; font-weight:700; color:var(--text-red-hi);">Click to Flip Back &#8635;</span>
+                    </div>
+                    <div class="inset-box" style="font-size:15.5px; font-weight:700; color:var(--text-main); margin-bottom:12px;">
+                      &ldquo;Leave this game [slur], I found your real name and address!&rdquo;
+                    </div>
+                    <p style="font-size:15px; line-height:1.52; color:var(--text-body);">
+                      Crosses from gameplay into emotional abuse, intimidation and potential cybercrime.
+                    </p>
+                  </div>
+                  <div class="inset-box" style="padding:8px 12px; font-size:13px; font-weight:700; color:var(--text-red-hi);">
+                    Outcome: Psychological distress and real-life danger.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Exact Toxic Playing Categories from Kwak et al. (ACM CHI 2015) -->
+          <div class="card" style="padding: 13px 18px; display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+              <span style="font-family:var(--font-heading); font-size:12px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em;">
+                COMMON FORMS (7 CORE TRIBUNAL CATEGORIES IN KWAK ET AL., 2015):
+              </span>
+              <a class="cite-link" href="https://arxiv.org/abs/1504.02305" target="_blank" rel="noopener noreferrer">
+                &#128279; Kwak et al. (ACM CHI 2015) - Open Access Study &#8599;
+              </a>
+            </div>
+            <div style="display:flex; align-items:center; gap:7px; flex-wrap:wrap;" id="harm-pills">
+              <button class="pill-btn active" style="padding:5px 11px; font-size:12px;" onclick="selectHarmType(0)">Offensive Language</button>
+              <button class="pill-btn" style="padding:5px 11px; font-size:12px;" onclick="selectHarmType(1)">Verbal Abuse</button>
+              <button class="pill-btn" style="padding:5px 11px; font-size:12px;" onclick="selectHarmType(2)">Intentional Feeding</button>
+              <button class="pill-btn" style="padding:5px 11px; font-size:12px;" onclick="selectHarmType(3)">Assisting Enemy Team</button>
+              <button class="pill-btn" style="padding:5px 11px; font-size:12px;" onclick="selectHarmType(4)">Negative Attitude</button>
+              <button class="pill-btn" style="padding:5px 11px; font-size:12px;" onclick="selectHarmType(5)">Spamming</button>
+              <button class="pill-btn" style="padding:5px 11px; font-size:12px;" onclick="selectHarmType(6)">Inappropriate Name</button>
+            </div>
+            <div id="harm-example" class="inset-box" style="border-left: 4px solid var(--accent-red); font-size:13.8px; line-height:1.45; color:var(--text-main); padding:9px 13px;">
+              <strong>Offensive Language [Cyberbullying]:</strong> The most frequently reported toxic behavior in Kwak et al. (2015) &mdash; profane or offensive chat mainly reported by teammates inside ally chat (avg. 1.691 reports/match).
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           SLIDE 4: 5W1H - WHO & WHEN (STAKEHOLDERS + EVOLUTION TIMELINE)
+           ================================================================= -->
+      <section class="slide" data-slide="4" data-title="5W1H (WHO &amp; WHEN): Stakeholders &amp; Evolution">
+        <div class="slide-header">
+          <div>
+            <span class="section-pill cyan">5W1H &#8226; WHO &amp; WHEN</span>
+            <h2 class="slide-title">Who Is Involved &amp; How Did It Grow?</h2>
+          </div>
+          <span class="slide-num-badge">SLIDE 04 / 13</span>
+        </div>
+
+        <div class="slide-body" style="justify-content: space-between; gap: 13px;">
+          <!-- WHO: 4 Stakeholder Cards with Clean Photography -->
+          <div>
+            <div style="font-family:var(--font-heading); font-size:12px; font-weight:700; letter-spacing:0.08em; color:var(--text-cyan-hi); margin-bottom:8px; text-transform:uppercase;">
+              WHO - 4 MAIN GROUPS INVOLVED
+            </div>
+            <div class="grid-4">
+              <!-- 1. Players & Victims -->
+              <div class="who-card" style="border-color: var(--accent-red);">
+                <div class="who-thumb">
+                  <img src="https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&w=600&q=80" alt="Gaming controller for players and victims" onerror="handlePhotoError(this)" />
+                  <div class="photo-fallback">PLAYERS &amp; VICTIMS</div>
+                </div>
+                <div class="who-body">
+                  <div style="font-size:11px; font-weight:800; color:var(--accent-red);">01. PLAYERS &amp; VICTIMS</div>
+                  <div style="font-family:var(--font-heading); font-size:15px; font-weight:700;">Youth &amp; Everyday Gamers</div>
+                  <p style="font-size:12.5px; color:var(--text-muted); line-height:1.4;">Players who face verbal attacks or get pushed out of matches.</p>
+                </div>
+              </div>
+
+              <!-- 2. Game Studios -->
+              <div class="who-card" style="border-color: var(--accent-blue);">
+                <div class="who-thumb">
+                  <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&q=80" alt="Game development code screen" onerror="handlePhotoError(this)" />
+                  <div class="photo-fallback">GAME STUDIOS</div>
+                </div>
+                <div class="who-body">
+                  <div style="font-size:11px; font-weight:800; color:var(--text-blue-hi);">02. GAME STUDIOS</div>
+                  <div style="font-family:var(--font-heading); font-size:15px; font-weight:700;">Riot, Activision &amp; Moonton</div>
+                  <p style="font-size:12.5px; color:var(--text-muted); line-height:1.4;">Studios that build chat systems, report tools and player rules.</p>
+                </div>
+              </div>
+
+              <!-- 3. Platforms & Chat Apps -->
+              <div class="who-card" style="border-color: var(--accent-cyan);">
+                <div class="who-thumb">
+                  <img src="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=600&q=80" alt="Voice chat microphone platform" onerror="handlePhotoError(this)" />
+                  <div class="photo-fallback">PLATFORMS &amp; CHAT APPS</div>
+                </div>
+                <div class="who-body">
+                  <div style="font-size:11px; font-weight:800; color:var(--text-cyan-hi);">03. PLATFORMS &amp; CHAT APPS</div>
+                  <div style="font-family:var(--font-heading); font-size:15px; font-weight:700;">Discord, TikTok &amp; WhatsApp</div>
+                  <p style="font-size:12.5px; color:var(--text-muted); line-height:1.4;">Outside apps where squads chat and game fights often spill over.</p>
+                </div>
+              </div>
+
+              <!-- 4. Regulators & Police (Modest Law Library Books Photo) -->
+              <div class="who-card" style="border-color: var(--accent-green);">
+                <div class="who-thumb">
+                  <img src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=800&q=80" alt="Classic law library and legal books" onerror="handlePhotoError(this)" />
+                  <div class="photo-fallback">REGULATORS &amp; POLICE</div>
+                </div>
+                <div class="who-body">
+                  <div style="font-size:11px; font-weight:800; color:var(--accent-green);">04. REGULATORS &amp; POLICE</div>
+                  <div style="font-family:var(--font-heading); font-size:15px; font-weight:700;">MCMC &amp; PDRM (Malaysia)</div>
+                  <p style="font-size:12.5px; color:var(--text-muted); line-height:1.4;">Authorities who investigate cyberbullying, stalking and threats.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- WHEN: Interactive 3-Decade Timeline Stepper -->
+          <div class="card" style="padding: 13px 17px; flex:1; display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
+                <span class="section-pill cyan" style="margin:0;">WHEN - TIMELINE OF TOXICITY</span>
+                <span class="no-print" style="font-size:12.5px; color:var(--text-muted); font-weight:600;">Click each decade to view how risk grew</span>
+              </div>
+              <div class="era-tabs-wrap" style="display:flex; gap:10px; margin-bottom:10px;">
+                <button class="era-tab active" id="era-0" onclick="selectEra(0)">
+                  <div style="font-family:var(--font-heading); font-size:19px; font-weight:700; color:var(--text-cyan-hi);">2000s</div>
+                  <div style="font-size:12.5px; font-weight:700;">Text Era</div>
+                </button>
+                <button class="era-tab" id="era-1" onclick="selectEra(1)">
+                  <div style="font-family:var(--font-heading); font-size:19px; font-weight:700; color:var(--accent-amber);">2010s</div>
+                  <div style="font-size:12.5px; font-weight:700;">Open Voice Era</div>
+                </button>
+                <button class="era-tab" id="era-2" onclick="selectEra(2)">
+                  <div style="font-family:var(--font-heading); font-size:19px; font-weight:700; color:var(--accent-red);">2020s</div>
+                  <div style="font-size:12.5px; font-weight:700;">Cross-Platform &amp; AI</div>
+                </button>
+              </div>
+            </div>
+
+            <div id="era-content" class="grid-12 inset-box" style="align-items:center; padding:12px 15px;">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           SLIDE 5: 5W1H - WHERE & WHY (GLOBAL VS MALAYSIA + CYBERPSYCHOLOGY)
+           ================================================================= -->
+      <section class="slide" data-slide="5" data-title="5W1H (WHERE &amp; WHY): Context &amp; Causes">
+        <div class="slide-header">
+          <div>
+            <span class="section-pill red">5W1H - WHERE &amp; WHY</span>
+            <h2 class="slide-title">Where It Happens &amp; Why Players Turn Toxic</h2>
+          </div>
+          <span class="slide-num-badge">SLIDE 05 / 13</span>
+        </div>
+
+        <div class="slide-body grid-12" style="align-items: stretch;">
+          <!-- Left: WHERE - Global PC vs Malaysia Mobile + Gaming Setup Photo -->
+          <div class="col-6 card blue-edge" style="display:flex; flex-direction:column; justify-content:space-between; gap:11px;">
+            <div>
+              <span class="section-pill" style="margin-bottom:9px;">WHERE - GLOBAL PC VS MALAYSIA MOBILE</span>
+
+              <div class="photo-box" style="height: 134px; margin-bottom: 11px;">
+                <img src="https://images.unsplash.com/photo-1593305841991-05c297ba4575?auto=format&fit=crop&w=900&q=80" alt="Competitive gaming desk setup with monitors" onerror="handlePhotoError(this, 'Global PC &amp; Mobile Gaming Spaces')" />
+                <div class="photo-caption">From ranked PC lobbies globally to mobile esports squads in Malaysia.</div>
+              </div>
+
+              <div class="grid-2" style="gap: 10px;">
+                <div class="inset-box" style="border-top: 3px solid var(--accent-blue); padding: 11px 12px;">
+                  <div style="font-family:var(--font-heading); font-size:13px; font-weight:700; color:var(--text-blue-hi); margin-bottom:5px;">GLOBAL PC ARENAS</div>
+                  <p style="font-size:13px; line-height:1.45; color:var(--text-body);">
+                    Ranked PC games like <strong>Valorant</strong>, <strong>Call of Duty</strong> and <strong>CS2</strong> suffer frequent voice abuse in anonymous lobbies.
+                  </p>
+                </div>
+
+                <div class="inset-box" style="border-top: 3px solid var(--accent-red); padding: 11px 12px;">
+                  <div style="font-family:var(--font-heading); font-size:13px; font-weight:700; color:var(--text-red-hi); margin-bottom:5px;">MALAYSIA &amp; SEA MOBILE</div>
+                  <p style="font-size:13px; line-height:1.45; color:var(--text-body);">
+                    <strong>MLBB</strong> and <strong>PUBG Mobile</strong> lead locally - with fights often spilling into <strong>WhatsApp</strong> and <strong>TikTok</strong> groups.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <a class="cite-link" href="https://wao.org.my/publications/understanding-malaysians-experiences-of-stalking/" target="_blank" rel="noopener noreferrer">
+                &#128279; WAO Malaysia - Stalking &amp; Harassment Report &#8599;
+              </a>
+            </div>
+          </div>
+
+          <!-- Right: WHY - Cyberpsychology Causes + John Suler PubMed Link -->
+          <div class="col-6 card red-edge" style="display:flex; flex-direction:column; justify-content:space-between; gap:11px;">
+            <div>
+              <span class="section-pill red" style="margin-bottom:10px;">WHY - CYBERPSYCHOLOGY CAUSES</span>
+
+              <div style="display:flex; flex-direction:column; gap:9px;">
+                <div class="inset-box" style="border-left: 4px solid var(--accent-red); padding: 10px 13px;">
+                  <div style="font-family:var(--font-heading); font-size:14.5px; font-weight:700; color:var(--text-main);">1. Online Disinhibition Effect (Suler, 2004)</div>
+                  <p style="font-size:13.2px; color:var(--text-body); margin-top:2px;">Hiding behind anonymous usernames makes people act crueler than they ever would face to face.</p>
+                </div>
+
+                <div class="inset-box" style="border-left: 4px solid var(--accent-amber); padding: 10px 13px;">
+                  <div style="font-family:var(--font-heading); font-size:14.5px; font-weight:700; color:var(--text-main);">2. ELO Frustration &amp; Rank Pressure</div>
+                  <p style="font-size:13.2px; color:var(--text-body); margin-top:2px;">Losing rank points triggers anger that players unfairly take out on teammates.</p>
+                </div>
+
+                <div class="inset-box" style="border-left: 4px solid var(--accent-blue); padding: 10px 13px;">
+                  <div style="font-family:var(--font-heading); font-size:14.5px; font-weight:700; color:var(--text-main);">3. Mob Mentality in Squads</div>
+                  <p style="font-size:13.2px; color:var(--text-body); margin-top:2px;">When one player mocks a teammate, others pile on because nobody feels individually blamed.</p>
+                </div>
+
+                <div class="inset-box" style="border-left: 4px solid var(--accent-cyan); padding: 10px 13px;">
+                  <div style="font-family:var(--font-heading); font-size:14.5px; font-weight:700; color:var(--text-main);">4. Misused Free Speech Excuse</div>
+                  <p style="font-size:13.2px; color:var(--text-body); margin-top:2px;">Some gamers defend slurs as &ldquo;normal gaming culture&rdquo; while ignoring basic respect.</p>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <a class="cite-link red" href="https://pubmed.ncbi.nlm.nih.gov/15257832/" target="_blank" rel="noopener noreferrer">
+                &#128279; Prof. John Suler (2004) - PubMed Article &#8599;
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           SLIDE 6: DEPTH OF ANALYSIS - ADVANTAGES VS RISKS & IMPACTS
+           ================================================================= -->
+      <section class="slide" data-slide="6" data-title="Depth of Analysis: Advantages vs Risks">
+        <div class="slide-header">
+          <div>
+            <span class="section-pill green">DEPTH OF ANALYSIS</span>
+            <h2 class="slide-title">Advantages of Game Chat vs Toxic Risks &amp; Impacts</h2>
+          </div>
+          <span class="slide-num-badge">SLIDE 06 / 13</span>
+        </div>
+
+        <div class="slide-body grid-2" style="align-items: stretch;">
+          <!-- Left (Blue): Advantages of In-Game Communication -->
+          <div class="card blue-edge" style="display:flex; flex-direction:column; justify-content:space-between; gap:12px;">
+            <div>
+              <span class="section-pill">POSITIVE SIDE</span>
+              <h3 style="font-size:25px; color:var(--text-blue-hi); margin: 4px 0 13px 0;">
+                Advantages of In-Game Communication
+              </h3>
+
+              <div style="display:flex; flex-direction:column; gap:11px;">
+                <div class="inset-box" style="border-left: 4px solid var(--accent-blue); padding: 12px 14px;">
+                  <div style="font-family:var(--font-heading); font-size:15.5px; font-weight:700; color:var(--text-main);">1. Fast Team Strategy</div>
+                  <p style="font-size:14px; color:var(--text-body); margin-top:3px;">Real-time voice callouts help squads coordinate attacks and react quickly during competitive matches.</p>
+                </div>
+
+                <div class="inset-box" style="border-left: 4px solid var(--accent-cyan); padding: 12px 14px;">
+                  <div style="font-family:var(--font-heading); font-size:15.5px; font-weight:700; color:var(--text-main);">2. Global Friendships</div>
+                  <p style="font-size:14px; color:var(--text-body); margin-top:3px;">Connects students with friends and teammates across different cities and countries.</p>
+                </div>
+
+                <div class="inset-box" style="border-left: 4px solid var(--accent-green); padding: 12px 14px;">
+                  <div style="font-family:var(--font-heading); font-size:15.5px; font-weight:700; color:var(--text-main);">3. Teamwork &amp; Leadership Skills</div>
+                  <p style="font-size:14px; color:var(--text-body); margin-top:3px;">Healthy lobbies encourage clear communication, problem solving and calm leadership under pressure.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="inset-box" style="background:var(--bg-soft-blue); font-size:13.5px; font-weight:700; color:var(--text-blue-hi);">
+              Key Insight: Game chat has real social value - the goal is stopping abuse, not banning games.
+            </div>
+          </div>
+
+          <!-- Right (Red): When Chat Turns Toxic - Risks & Impacts + Gamer Headset Photo -->
+          <div class="card red-edge" style="display:flex; flex-direction:column; justify-content:space-between; gap:11px;">
+            <div>
+              <span class="section-pill red">RISKS &amp; IMPACTS</span>
+              <h3 style="font-size:25px; color:var(--accent-red); margin: 4px 0 10px 0;">
+                When Chat Turns Toxic - Risks &amp; Impacts
+              </h3>
+
+              <!-- Verified Real Photograph of Toxic Gaming Stress & Verbal Harassment -->
+              <div class="photo-box" style="height: 175px; margin-bottom: 12px;">
+                <img src="https://images.pexels.com/photos/7915575/pexels-photo-7915575.jpeg?auto=compress&cs=tinysrgb&w=900" style="object-position: center 22%;" alt="Distressed gamer holding head in hands while another player yells aggressively" onerror="handlePhotoError(this, 'Emotional Distress from Toxic Voice Abuse')" />
+                <div class="photo-caption">Hostile verbal abuse during gaming triggers real emotional stress, anxiety and drives players away.</div>
+              </div>
+
+              <ul class="clean-list" style="font-size:14.6px; gap:8px;">
+                <li><strong>Emotional Stress:</strong> Triggers anxiety, low self-esteem and fear of speaking in voice chat.</li>
+                <li><strong>Players Quitting:</strong> Good players mute comms or abandon games - shrinking healthy communities.</li>
+                <li><strong>Real-World Threats:</strong> Online fights escalate into doxxing, cyberstalking and physical harm.</li>
+              </ul>
+            </div>
+
+            <div class="inset-box" style="background:var(--bg-soft-red); font-size:13.5px; font-weight:700; color:var(--text-red-hi);">
+              Critical Reality: Unchecked toxicity destroys the teamwork benefits gaming aims to create.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           SLIDE 7: REAL CASE EVIDENCE - 2017 WICHITA SWATTING
+           ================================================================= -->
+      <section class="slide" data-slide="7" data-title="Real Case Evidence: 2017 Wichita Swatting">
+        <div class="slide-header">
+          <div>
+            <span class="section-pill red">REAL CASE EVIDENCE</span>
+            <h2 class="slide-title">When Digital Anger Turns Fatal: 2017 Wichita Swatting</h2>
+          </div>
+          <span class="slide-num-badge">SLIDE 07 / 13</span>
+        </div>
+
+        <div class="slide-body" style="justify-content: space-between; gap: 12px;">
+          <!-- Top Banner: Emergency Police Response Photo + Action Controls -->
+          <div class="grid-12" style="align-items: stretch; flex-shrink: 0;">
+            <div class="col-7 photo-box" style="height: 142px;">
+              <img src="https://images.unsplash.com/photo-1453873531674-2151bcd01707?auto=format&fit=crop&w=900&q=80" alt="Emergency police response vehicle" onerror="handlePhotoError(this, 'Emergency Police Response - Wichita 2017')" />
+              <div class="photo-caption">December 2017, Wichita, Kansas - A fake emergency call from a Call of Duty dispute turned fatal.</div>
+            </div>
+
+            <div class="col-5 card red-edge" style="padding: 13px 16px; display:flex; flex-direction:column; justify-content:space-between;">
+              <div>
+                <div style="font-family:var(--font-heading); font-size:11.5px; font-weight:700; color:var(--accent-red); letter-spacing:0.08em; margin-bottom:4px;">U.S. DEPARTMENT OF JUSTICE CASE</div>
+                <p style="font-size:14.2px; font-weight:700; line-height:1.45; color:var(--text-main);">
+                  $1.50 Game Bet &#8594; Hoax 911 Call &#8594; Fatal Shooting &#8594; 20-Year Federal Prison Sentence.
+                </p>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-top:8px;">
+                <a class="cite-link red" href="https://www.justice.gov/usao-ks/pr/california-man-sentenced-20-years-swatting-led-death-wichita-man" target="_blank" rel="noopener noreferrer">
+                  &#128279; U.S. DOJ Press Release &#8599;
+                </a>
+                <button id="swat-toggle-btn" class="btn btn-red no-print" style="padding:6px 12px; font-size:12.5px;" onclick="toggleAllSwat()">Reveal All</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 Interactive Flip Cards in Sequence -->
+          <div class="grid-4 swat-grid" style="flex:1; gap:13px;">
+            <div class="flip-scene swat-scene" onclick="toggleFlip(this)">
+              <div class="flip-card">
+                <div class="flip-face blue-card">
+                  <div>
+                    <span class="section-pill" style="margin:0;">STEP 1</span>
+                    <h3 style="font-size:21px; color:var(--text-blue-hi); margin:10px 0 7px 0;">1. $1.50 Call of Duty Wager</h3>
+                    <p style="font-size:13.8px; color:var(--text-body); line-height:1.45;">A petty $1.50 online match bet sparked an angry argument between gamers.</p>
+                  </div>
+                  <span class="no-print" style="font-size:11.5px; font-weight:700; color:var(--text-blue-hi);">Click to Flip &#8635;</span>
+                </div>
+                <div class="flip-face flip-back blue-card">
+                  <div>
+                    <span class="section-pill cyan" style="margin:0;">WHAT HAPPENED</span>
+                    <p style="font-size:13.5px; line-height:1.48; color:var(--text-main); margin-top:10px;">
+                      After losing a small wager, one player dared another to &ldquo;swat&rdquo; him and gave an old Wichita street address.
+                    </p>
+                  </div>
+                  <span style="font-size:11.5px; font-weight:700; color:var(--text-muted);">Click to Flip Back</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="flip-scene swat-scene" onclick="toggleFlip(this)">
+              <div class="flip-card">
+                <div class="flip-face amber-card">
+                  <div>
+                    <span class="section-pill amber" style="margin:0;">STEP 2</span>
+                    <h3 style="font-size:21px; color:var(--accent-amber); margin:10px 0 7px 0;">2. Hoax 911 Call</h3>
+                    <p style="font-size:13.8px; color:var(--text-body); line-height:1.45;">Tyler Barriss phoned police reporting a fake hostage crisis at that address.</p>
+                  </div>
+                  <span class="no-print" style="font-size:11.5px; font-weight:700; color:var(--text-amber-hi);">Click to Flip &#8635;</span>
+                </div>
+                <div class="flip-face flip-back amber-card">
+                  <div>
+                    <span class="section-pill amber" style="margin:0;">WHAT HAPPENED</span>
+                    <p style="font-size:13.5px; line-height:1.48; color:var(--text-main); margin-top:10px;">
+                      Barriss falsely claimed a shooting had occurred and hostages were trapped inside - triggering an armed police response.
+                    </p>
+                  </div>
+                  <span style="font-size:11.5px; font-weight:700; color:var(--text-muted);">Click to Flip Back</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="flip-scene swat-scene" onclick="toggleFlip(this)">
+              <div class="flip-card">
+                <div class="flip-face red-card">
+                  <div>
+                    <span class="section-pill red" style="margin:0;">STEP 3</span>
+                    <h3 style="font-size:21px; color:var(--accent-red); margin:10px 0 7px 0;">3. Fatal Shooting of Andrew Finch</h3>
+                    <p style="font-size:13.8px; color:var(--text-body); line-height:1.45;">Armed officers arrived and fatally shot 28-year-old innocent father Andrew Finch.</p>
+                  </div>
+                  <span class="no-print" style="font-size:11.5px; font-weight:700; color:var(--text-red-hi);">Click to Flip &#8635;</span>
+                </div>
+                <div class="flip-face flip-back red-card" style="background: var(--bg-soft-red);">
+                  <div>
+                    <span class="section-pill red" style="margin:0;">TRAGIC IMPACT</span>
+                    <p style="font-size:13.5px; line-height:1.48; color:var(--text-main); margin-top:10px;">
+                      Andrew Finch did not play the game at all. He walked onto his porch confused and lost his life due to toxic escalation.
+                    </p>
+                  </div>
+                  <span style="font-size:11.5px; font-weight:700; color:var(--text-red-hi);">Click to Flip Back</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="flip-scene swat-scene" onclick="toggleFlip(this)">
+              <div class="flip-card">
+                <div class="flip-face green-card">
+                  <div>
+                    <span class="section-pill green" style="margin:0;">STEP 4</span>
+                    <h3 style="font-size:21px; color:var(--accent-green); margin:10px 0 7px 0;">4. 20-Year Federal Prison Sentence</h3>
+                    <p style="font-size:13.8px; color:var(--text-body); line-height:1.45;">A federal judge sentenced Barriss to 20 years in prison for the fatal hoax.</p>
+                  </div>
+                  <span class="no-print" style="font-size:11.5px; font-weight:700; color:var(--text-green-hi);">Click to Flip &#8635;</span>
+                </div>
+                <div class="flip-face flip-back green-card">
+                  <div>
+                    <span class="section-pill green" style="margin:0;">KEY LESSON</span>
+                    <p style="font-size:13.5px; line-height:1.48; color:var(--text-main); margin-top:10px;">
+                      Digital toxicity never stays trapped inside a screen. Words and online revenge can destroy innocent lives.
+                    </p>
+                  </div>
+                  <span style="font-size:11.5px; font-weight:700; color:var(--text-green-hi);">Real Accountability</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           SLIDE 8: ETHICAL ANALYSIS - CHAPTER 1 (OPTIMIZED SPACE & LAYOUT)
+           ================================================================= -->
+      <section class="slide" data-slide="8" data-title="Ethical Analysis: Applying Moral Theories">
+        <div class="slide-header">
+          <div>
+            <span class="section-pill">ETHICAL ANALYSIS - CHAPTER 1</span>
+            <h2 class="slide-title">Applying Moral Theories to Gaming Toxicity</h2>
+          </div>
+          <span class="slide-num-badge">SLIDE 08 / 13</span>
+        </div>
+
+        <div class="slide-body" style="justify-content: space-between; gap: 14px;">
+          <!-- Exact 4 Interactive Ethics Theory Tabs -->
+          <div class="tab-row-wrap no-print" style="display:flex; gap:10px; align-items:center;">
+            <button class="tab-btn active" id="eth-0" onclick="selectEthics(0)">1. Kantian Deontology</button>
+            <button class="tab-btn" id="eth-1" onclick="selectEthics(1)">2. Utilitarianism</button>
+            <button class="tab-btn" id="eth-2" onclick="selectEthics(2)">3. Social Contract</button>
+            <button class="tab-btn" id="eth-3" onclick="selectEthics(3)">4. Comparison Table</button>
+          </div>
+
+          <!-- Dynamic Ethics Content Panel (Optimized Full-Height Balanced Layout) -->
+          <div id="eth-panel" class="card blue-edge">
+            <!-- Populated by selectEthics(0) -->
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           SLIDE 9: ISLAMIC ETHICS (CHAPTER 2) & MALAYSIAN CYBER LAW
+           ================================================================= -->
+      <section class="slide" data-slide="9" data-title="Islamic Ethics (Chapter 2) &amp; Malaysian Cyber Law">
+        <div class="slide-header">
+          <div>
+            <span class="section-pill amber">CHAPTER 2 &amp; MALAYSIAN LAW</span>
+            <h2 class="slide-title">Islamic Perspective &amp; Malaysian Cyber Laws</h2>
+          </div>
+          <span class="slide-num-badge">SLIDE 09 / 13</span>
+        </div>
+
+        <div class="slide-body" style="justify-content: space-between; gap: 11px;">
+          <div class="grid-2" style="flex:1; align-items: start; gap: 18px;">
+            <!-- Left: Islamic Ethics Accordion (ICT652 Chapter 2) -->
+            <div>
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:9px;">
+                <span class="section-pill" style="margin:0;">ISLAMIC ETHICS (CHAPTER 2)</span>
+                <span class="no-print" style="font-size:12px; color:var(--text-muted); font-weight:600;">Click to toggle</span>
+              </div>
+
+              <div class="acc-item open">
+                <button class="acc-head" onclick="toggleAcc(this)">
+                  <span>1. Akhlaq (Surah Al-Baqarah 2:83)</span>
+                  <span class="acc-arrow">&#9662;</span>
+                </button>
+                <div class="acc-body">
+                  <strong>Surah Al-Baqarah (2:83)</strong> commands us to <em>&ldquo;speak kindly to people.&rdquo;</em> Cursing, mocking and insulting teammates in game chat directly break Islamic manners (<em>Adab</em>).
+                </div>
+              </div>
+
+              <div class="acc-item open">
+                <button class="acc-head" onclick="toggleAcc(this)">
+                  <span>2. La Darar wa La Dirar (No Harm)</span>
+                  <span class="acc-arrow">&#9662;</span>
+                </button>
+                <div class="acc-body">
+                  No harm should be caused or returned in online spaces. Even when another player provokes you first, replying with abuse is still ethically wrong.
+                </div>
+              </div>
+
+              <div class="acc-item open">
+                <button class="acc-head" onclick="toggleAcc(this)">
+                  <span>3. Amanah (Trust &amp; Duty)</span>
+                  <span class="acc-arrow">&#9662;</span>
+                </button>
+                <div class="acc-body">
+                  Game creators and platform owners hold a moral trust (<strong>Amanah</strong>) to protect users - especially children and youth - from digital abuse.
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Modest Law Library Books Photo + Malaysian Law Accordion -->
+            <div>
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:9px;">
+                <span class="section-pill red" style="margin:0;">MALAYSIAN CYBER LAW</span>
+                <span class="no-print" style="font-size:12px; color:var(--text-muted); font-weight:600;">Click to toggle</span>
+              </div>
+
+              <div class="photo-box" style="height: 112px; margin-bottom: 8px;">
+                <img src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=800&q=80" alt="Classic law library and legal statutes" onerror="handlePhotoError(this)" />
+                <div class="photo-fallback">MALAYSIAN CYBER LAW - ACT 588 &amp; PENAL CODE</div>
+                <div class="photo-caption">CMA 1998 (Act 588) &amp; Penal Code Section 507A protect online safety in Malaysia.</div>
+              </div>
+
+              <div class="acc-item red-acc open">
+                <button class="acc-head" onclick="toggleAcc(this)">
+                  <span>1. CMA 1998 - Section 233 (Act 588)</span>
+                  <span class="acc-arrow">&#9662;</span>
+                </button>
+                <div class="acc-body">
+                  Sending grossly offensive or menacing messages online with intent to harass others is a crime under Malaysian communications law - carrying heavy fines and possible jail time.
+                </div>
+              </div>
+
+              <div class="acc-item red-acc open">
+                <button class="acc-head" onclick="toggleAcc(this)">
+                  <span>2. Penal Code - Section 507A (Anti-Stalking)</span>
+                  <span class="acc-arrow">&#9662;</span>
+                </button>
+                <div class="acc-body">
+                  Repeated online stalking or harassment that causes fear or distress is punishable by up to <strong>3 years in jail</strong>, a fine or both.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <span style="font-size:12.5px; font-weight:700; color:var(--text-muted);">Official Malaysian Legal Sources:</span>
+            <div style="display:flex; flex-wrap:wrap; gap:9px;">
+              <a class="cite-link" href="https://lom.agc.gov.my/act-detail.php?type=act&act=588&lang=BI" target="_blank" rel="noopener noreferrer">
+                &#128279; AGC Malaysia - CMA 1998 (Act 588) &#8599;
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           SLIDE 10: 5W1H - HOW (IT & NON-IT SOLUTIONS WITH WORKING FILTER)
+           ================================================================= -->
+      <section class="slide" data-slide="10" data-title="5W1H (HOW): IT &amp; Non-IT Solutions">
+        <div class="slide-header">
+          <div>
+            <span class="section-pill green">5W1H - HOW (SOLUTIONS)</span>
+            <h2 class="slide-title">Realistic Solutions: IT &amp; Non-IT Approach</h2>
+          </div>
+          <span class="slide-num-badge">SLIDE 10 / 13</span>
+        </div>
+
+        <div class="slide-body" style="justify-content: space-between; gap: 13px;">
+          <!-- Top Subtitle + 3 Working Filter Buttons -->
+          <div class="no-print" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <span style="font-size:14.8px; font-weight:600; color:var(--text-muted);">
+              Software alone is not enough - we need both technology and people.
+            </span>
+            <div style="display:flex; gap:8px;">
+              <button class="pill-btn blue-active active" id="sol-both" onclick="filterSolutions('both')">Show Both</button>
+              <button class="pill-btn blue-active" id="sol-it" onclick="filterSolutions('it')">IT Solutions Only</button>
+              <button class="pill-btn" id="sol-nonit" onclick="filterSolutions('nonit')">Non-IT Solutions Only</button>
+            </div>
+          </div>
+
+          <!-- Two Solution Columns -->
+          <div id="sol-grid" class="sol-grid">
+            <!-- IT Solutions Column -->
+            <div id="card-it" class="card blue-edge sol-card">
+              <div>
+                <span class="section-pill">IT / TECHNICAL SOLUTIONS</span>
+                <h3 style="font-size:24px; color:var(--text-blue-hi); margin: 5px 0 12px 0;">
+                  Smarter Game Systems
+                </h3>
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                  <div class="inset-box" style="border-left: 4px solid var(--accent-blue); padding: 11px 14px;">
+                    <div style="font-family:var(--font-heading); font-size:15px; font-weight:700; color:var(--text-main);">1. Real-Time AI Moderation</div>
+                    <p style="font-size:13.8px; color:var(--text-body); margin-top:2px;">Detect toxic voice and text chat immediately before abuse gets worse.</p>
+                  </div>
+                  <div class="inset-box" style="border-left: 4px solid var(--accent-cyan); padding: 11px 14px;">
+                    <div style="font-family:var(--font-heading); font-size:15px; font-weight:700; color:var(--text-main);">2. Phone Number Verification (2FA)</div>
+                    <p style="font-size:13.8px; color:var(--text-body); margin-top:2px;">Stop banned toxic players from creating endless new free &ldquo;smurf&rdquo; accounts.</p>
+                  </div>
+                  <div class="inset-box" style="border-left: 4px solid var(--accent-green); padding: 11px 14px;">
+                    <div style="font-family:var(--font-heading); font-size:15px; font-weight:700; color:var(--text-main);">3. Reputation Matchmaking</div>
+                    <p style="font-size:13.8px; color:var(--text-body); margin-top:2px;">Group polite players together and isolate repeat toxic players into separate lobbies.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Non-IT Solutions Column -->
+            <div id="card-nonit" class="card red-edge sol-card">
+              <div>
+                <span class="section-pill red">NON-IT / SOCIAL &amp; LEGAL SOLUTIONS</span>
+                <h3 style="font-size:24px; color:var(--accent-red); margin: 5px 0 12px 0;">
+                  People, Culture &amp; Law
+                </h3>
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                  <div class="inset-box" style="border-left: 4px solid var(--accent-amber); padding: 11px 14px;">
+                    <div style="font-family:var(--font-heading); font-size:15px; font-weight:700; color:var(--text-main);">1. Digital Ethics Education (MCMC Klik Dengan Bijak)</div>
+                    <p style="font-size:13.8px; color:var(--text-body); margin-top:2px;">Teach online manners and digital safety early in schools and universities.</p>
+                  </div>
+                  <div class="inset-box" style="border-left: 4px solid var(--accent-red); padding: 11px 14px;">
+                    <div style="font-family:var(--font-heading); font-size:15px; font-weight:700; color:var(--text-main);">2. Parent &amp; Community Rules</div>
+                    <p style="font-size:13.8px; color:var(--text-body); margin-top:2px;">Active parental supervision for kids plus zero-tolerance rules by streamers and esports clubs.</p>
+                  </div>
+                  <div class="inset-box" style="border-left: 4px solid var(--accent-blue); padding: 11px 14px;">
+                    <div style="font-family:var(--font-heading); font-size:15px; font-weight:700; color:var(--text-main);">3. Legal Action &amp; Victim Support</div>
+                    <p style="font-size:13.8px; color:var(--text-body); margin-top:2px;">Clear reporting pipelines to MCMC, PDRM and Cyber999 plus mental health support for victims.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Direct Bottom Links -->
+          <div style="display:flex; justify-content:flex-end; flex-wrap:wrap; gap:9px;">
+            <a class="cite-link" href="https://www.mcmc.gov.my/" target="_blank" rel="noopener noreferrer">
+              &#128279; MCMC Official Portal &#8599;
+            </a>
+            <a class="cite-link red" href="https://www.mycert.org.my/" target="_blank" rel="noopener noreferrer">
+              &#128279; CyberSecurity Malaysia (Cyber999) &#8599;
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           SLIDE 11: REAL-WORLD SOLUTION DEMO - CALL OF DUTY & TOXMOD
+           ================================================================= -->
+      <section class="slide" data-slide="11" data-title="Solution in Action: Call of Duty &amp; ToxMod Demo">
+        <div class="slide-header">
+          <div>
+            <span class="section-pill cyan">SOLUTION IN ACTION</span>
+            <h2 class="slide-title">Live Demo: Call of Duty &amp; Modulate ToxMod AI</h2>
+          </div>
+          <span class="slide-num-badge">SLIDE 11 / 13</span>
+        </div>
+
+        <div class="slide-body grid-12" style="align-items: stretch;">
+          <!-- Left Column: Audio Console Photo + Verified Call of Duty & ToxMod Stats -->
+          <div class="col-5" style="display:flex; flex-direction:column; justify-content:space-between; gap:10px;">
+            <div class="photo-box" style="height: 146px;">
+              <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=800&q=80" alt="Audio sound moderation console" onerror="handlePhotoError(this)" />
+              <div class="photo-fallback">TOXMOD AI VOICE MODERATION</div>
+              <div class="photo-caption">Real-time voice tone, volume and context analysis.</div>
+            </div>
+
+            <div class="card" style="padding: 12px 15px;">
+              <p style="font-size:13.8px; line-height:1.48; color:var(--text-body);">
+                <strong>Activision &amp; Modulate ToxMod:</strong> Scans live voice tone, volume and context in Call of Duty to stop severe voice abuse early.
+              </p>
+            </div>
+
+            <div class="grid-2" style="gap: 10px;">
+              <div class="card cyan-edge" style="padding: 11px; text-align:center;">
+                <div style="font-family:var(--font-heading); font-size:34px; font-weight:700; color:var(--text-cyan-hi); line-height:1;">50%</div>
+                <p style="font-size:12px; font-weight:700; color:var(--text-body); margin-top:4px;">drop in exposure to severe voice toxicity</p>
+              </div>
+              <div class="card green-edge" style="padding: 11px; text-align:center;">
+                <div style="font-family:var(--font-heading); font-size:34px; font-weight:700; color:var(--accent-green); line-height:1;">80%+</div>
+                <p style="font-size:12px; font-weight:700; color:var(--text-body); margin-top:4px;">of warned players did not repeat offense</p>
+              </div>
+            </div>
+
+            <div style="display:flex; flex-wrap:wrap; gap:7px;">
+              <a class="cite-link" href="https://www.callofduty.com/blog/2023/08/call-of-duty-modern-warfare-warzone-anti-toxicity-progress-report" target="_blank" rel="noopener noreferrer">
+                &#128279; Call of Duty Progress Report &#8599;
+              </a>
+              <a class="cite-link" href="https://www.modulate.ai/toxmod" target="_blank" rel="noopener noreferrer">
+                &#128279; Modulate ToxMod Platform &#8599;
+              </a>
+            </div>
+          </div>
+
+          <!-- Right Column: Live Audible Audio Spectrogram Simulator -->
+          <div class="col-7 card blue-edge" style="display:flex; flex-direction:column; justify-content:space-between; gap:10px; padding:16px 18px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+              <span class="section-pill cyan" style="margin:0;">LIVE AUDIO SIMULATOR</span>
+              <span id="audio-badge" style="font-family:var(--font-heading); font-size:12px; font-weight:700; padding:4px 11px; border-radius:999px; background:var(--bg-soft-green); color:var(--text-green-hi); border:1.5px solid var(--accent-green);">
+                READY &#8226; CLICK A SAMPLE TO LISTEN
+              </span>
+            </div>
+
+            <!-- Live Canvas Spectrogram -->
+            <canvas id="spectroCanvas" width="660" height="146"></canvas>
+
+            <!-- Live dB Meter -->
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span style="font-family:var(--font-heading); font-size:11.5px; font-weight:700; color:var(--text-muted); min-width:74px;">MIC LEVEL</span>
+              <div class="bar-track" style="height: 9px;">
+                <div id="audio-meter" class="bar-fill" style="width: 10%; background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan), var(--accent-red));"></div>
+              </div>
+              <span id="audio-db" style="font-family:var(--font-heading); font-size:12px; font-weight:700; color:var(--text-cyan-hi); min-width:46px; text-align:right;">-42 dB</span>
+            </div>
+
+            <!-- Live Synced Transcript & Verdict -->
+            <div class="inset-box" style="padding: 11px 14px;">
+              <div style="font-family:var(--font-heading); font-size:10.5px; font-weight:700; letter-spacing:0.08em; color:var(--text-muted); margin-bottom:4px;">
+                LIVE VOICE TRANSCRIPT &amp; AI DECISION
+              </div>
+              <div id="audio-transcript" style="font-size:15px; font-weight:700; color:var(--text-main); line-height:1.4;">
+                Press a sample button below to hear how AI separates tactical callouts from toxic abuse.
+              </div>
+              <div id="audio-verdict" style="margin-top:6px; font-size:13.2px; font-weight:700; color:var(--text-blue-hi);">
+                Status: Standby - Monitoring Volume, Tone and Context
+              </div>
+            </div>
+
+            <!-- Audio Playback Controls -->
+            <div class="no-print" style="display:flex; flex-direction:column; gap:8px;">
+              <div class="grid-2" style="gap:10px;">
+                <button class="btn btn-blue" onclick="playSample1()">
+                  &#9654; Play Sample 1: Tactical Callout (Safe)
+                </button>
+                <button class="btn btn-red" onclick="playSample2()">
+                  &#9654; Play Sample 2: Toxic Harassment (Flagged)
+                </button>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                <span style="font-size:12px; font-weight:600; color:var(--text-muted);">
+                  Uses built-in Web Audio &amp; Voice (works offline).
+                </span>
+                <div style="display:flex; gap:8px;">
+                  <button class="btn btn-ghost" style="padding:6px 12px; font-size:12.5px;" onclick="stopAudioSim(false)">&#9632; Stop</button>
+                  <button class="btn btn-green" id="btn-mute" style="padding:6px 12px; font-size:12.5px;" onclick="toggleMute()">&#128266; Sound: ON</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           SLIDE 12: CONCLUSION
+           ================================================================= -->
+      <section class="slide" data-slide="12" data-title="Conclusion: Building Safer Online Playgrounds">
+        <div class="slide-header">
+          <div>
+            <span class="section-pill green">CONCLUSION</span>
+            <h2 class="slide-title">Building Safer Online Playgrounds</h2>
+          </div>
+          <span class="slide-num-badge">SLIDE 12 / 13</span>
+        </div>
+
+        <div class="slide-body" style="justify-content: space-between; gap: 18px;">
+          <!-- 3 Clean Takeaway Cards -->
+          <div class="grid-3" style="flex:1; align-items: stretch;">
+            <div class="card red-edge" style="display:flex; flex-direction:column; justify-content:space-between; padding: 22px;">
+              <div>
+                <span class="section-pill red">TAKEAWAY 01</span>
+                <h3 style="font-size:26px; color:var(--accent-red); margin: 10px 0 12px 0;">
+                  Not &ldquo;Just a Game&rdquo;
+                </h3>
+                <p style="font-size:16px; line-height:1.58; color:var(--text-body);">
+                  Online harassment causes real emotional stress, drives good players away and can even lead to real-life tragedies.
+                </p>
+              </div>
+              <div class="inset-box" style="margin-top:14px; font-size:13px; font-weight:700; color:var(--text-red-hi);">
+                Real People &#8226; Real Impact
+              </div>
+            </div>
+
+            <div class="card blue-edge" style="display:flex; flex-direction:column; justify-content:space-between; padding: 22px;">
+              <div>
+                <span class="section-pill">TAKEAWAY 02</span>
+                <h3 style="font-size:26px; color:var(--text-blue-hi); margin: 10px 0 12px 0;">
+                  Shared Responsibility
+                </h3>
+                <p style="font-size:16px; line-height:1.58; color:var(--text-body);">
+                  Safe gaming needs both <strong>IT tools</strong> (AI moderation and verified accounts) plus <strong>Non-IT effort</strong> (good <em>Akhlaq</em>, digital education and Malaysian cyber laws).
+                </p>
+              </div>
+              <div class="inset-box" style="margin-top:14px; font-size:13px; font-weight:700; color:var(--text-blue-hi);">
+                IT Systems + Human Values
+              </div>
+            </div>
+
+            <div class="card green-edge" style="display:flex; flex-direction:column; justify-content:space-between; padding: 22px;">
+              <div>
+                <span class="section-pill green">TAKEAWAY 03</span>
+                <h3 style="font-size:26px; color:var(--text-green-hi); margin: 10px 0 12px 0;">
+                  Our Duty as UiTM Students
+                </h3>
+                <p style="font-size:16px; line-height:1.58; color:var(--text-body);">
+                  As future IT graduates from <strong>UiTM</strong>, we must design software and online platforms that protect human dignity from day one.
+                </p>
+              </div>
+              <div class="inset-box" style="margin-top:14px; font-size:13px; font-weight:700; color:var(--text-green-hi);">
+                Safety Built Into Design
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Quote Banner -->
+          <div class="card cyan-edge" style="text-align:center; padding: 19px 26px; background: linear-gradient(90deg, var(--bg-soft-blue), var(--bg-surface), var(--bg-soft-red));">
+            <p style="font-family:var(--font-heading); font-size: 27px; font-weight: 700; color: var(--text-main);">
+              &ldquo;Behind every screen and avatar is a real human being.&rdquo;
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           SLIDE 13: Q&A SESSION (CLEAN DEFAULT + TOGGLEABLE BACKUP Q&A)
+           ================================================================= -->
+      <section class="slide" data-slide="13" data-title="Q&amp;A Session">
+        <div class="slide-header">
+          <div>
+            <span class="section-pill red">Q&amp;A SESSION</span>
+            <h2 class="slide-title">Thank You - Any Questions?</h2>
+          </div>
+          <span class="slide-num-badge">SLIDE 13 / 13</span>
+        </div>
+
+        <div class="slide-body" style="justify-content: space-between; gap: 13px;">
+          <!-- Clean Default Screen -->
+          <div id="qa-clean-hero" class="card blue-edge" style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:16px; padding:26px;">
+            <span class="section-pill cyan" style="margin:0;">OPEN FLOOR DISCUSSION</span>
+            <h3 style="font-size:40px; color:var(--text-main); line-height:1.12;">
+              Thank You - Any Questions?
+            </h3>
+            <p style="font-size:18px; font-weight:500; color:var(--text-body); max-width:680px;">
+              We welcome questions from our lecturer and classmates about our case study, ethical theories, Malaysian cyber laws or proposed IT and Non-IT solutions.
+            </p>
+
+            <!-- 3-Minute Live Countdown Timer -->
+            <div class="inset-box no-print" style="display:flex; align-items:center; gap:12px; padding:10px 18px;">
+              <span style="font-family:var(--font-heading); font-size:12px; font-weight:700; letter-spacing:0.07em; color:var(--text-muted);">3-MIN Q&amp;A TIMER</span>
+              <span id="qa-timer" style="font-family:var(--font-heading); font-size:26px; font-weight:700; color:var(--text-cyan-hi); min-width:66px;">03:00</span>
+              <button class="btn btn-blue" id="qa-start-btn" style="padding:6px 12px; font-size:12.5px;" onclick="toggleQaTimer()">Start</button>
+              <button class="btn btn-ghost" style="padding:6px 12px; font-size:12.5px;" onclick="resetQaTimer()">Reset</button>
+            </div>
+          </div>
+
+          <!-- Hidden-by-Default Backup Questions Panel (Open & Close Freely) -->
+          <div id="backup-qa-panel" class="backup-panel">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+              <span class="section-pill amber" style="margin:0;">BACKUP QUESTIONS (FACT &amp; LAW BACKED)</span>
+              <span style="font-size:12.5px; font-weight:600; color:var(--text-muted);">Click Show Answer or Hide Answer on any card</span>
+            </div>
+
+            <div class="grid-3" style="gap: 13px; align-items: start;">
+              <!-- Q1 -->
+              <div class="card blue-edge" style="padding: 14px 15px;">
+                <span class="section-pill" style="margin:0 0 7px 0;">BACKUP Q1 &#8226; LAW</span>
+                <p style="font-size:14.2px; font-weight:700; line-height:1.42; color:var(--text-main); margin-bottom:9px;">
+                  &ldquo;In Malaysia, can a gamer really face legal action just for harassing or threatening someone in game chat?&rdquo;
+                </p>
+                <button class="btn btn-blue no-print" style="width:100%; padding:7px 10px; font-size:12.5px;" onclick="toggleQaAnswer(1, this)">
+                  Show Answer
+                </button>
+                <div id="qa-ans-1" class="qa-answer">
+                  <strong>Yes.</strong> Under <strong>CMA 1998 Section 233 (Act 588)</strong>, sending grossly offensive or menacing messages online to harass others is a criminal offense carrying heavy fines and possible jail time. Repeated online stalking also falls under <strong>Penal Code Section 507A</strong> (up to 3 years jail).
+                </div>
+              </div>
+
+              <!-- Q2: Terms of Service vs Free Speech -->
+              <div class="card red-edge" style="padding: 14px 15px;">
+                <span class="section-pill red" style="margin:0 0 7px 0;">BACKUP Q2 - FREE SPEECH</span>
+                <p style="font-size:14px; font-weight:700; line-height:1.42; color:var(--text-main); margin-bottom:9px;">
+                  &ldquo;Does muting or banning toxic players violate their right to freedom of speech?&rdquo;
+                </p>
+                <button class="btn btn-red no-print" style="width:100%; padding:7px 10px; font-size:12.5px;" onclick="toggleQaAnswer(2, this)">
+                  Show Answer
+                </button>
+                <div id="qa-ans-2" class="qa-answer">
+                  <strong>No.</strong> Under <strong>Social Contract Theory</strong>, players accept a private game&rsquo;s <strong>Terms of Service (ToS)</strong> before joining servers. Both Malaysian law and Islamic ethics (<strong>La Darar wa La Dirar</strong>) confirm that free expression never protects hate speech, harassment or threats.
+                </div>
+              </div>
+
+              <!-- Q3: Why Bans Alone Fail -->
+              <div class="card green-edge" style="padding: 14px 15px;">
+                <span class="section-pill green" style="margin:0 0 7px 0;">BACKUP Q3 - SOLUTIONS</span>
+                <p style="font-size:14px; font-weight:700; line-height:1.42; color:var(--text-main); margin-bottom:9px;">
+                  &ldquo;Why do simple account bans fail without 2FA verification and digital ethics education?&rdquo;
+                </p>
+                <button class="btn btn-green no-print" style="width:100%; padding:7px 10px; font-size:12.5px;" onclick="toggleQaAnswer(3, this)">
+                  Show Answer
+                </button>
+                <div id="qa-ans-3" class="qa-answer">
+                  In free-to-play games, banned offenders create disposable &ldquo;smurf&rdquo; accounts within minutes. Combining <strong>phone-number 2FA</strong>, live AI tools like <strong>ToxMod</strong> (80%+ non-reoffending rate) and <strong>Non-IT education</strong> stops both repeat accounts and toxic habits at the root.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Toggle Backup Questions Button -->
+          <div class="no-print" style="display:flex; justify-content:center;">
+            <button id="backup-toggle-btn" class="btn btn-amber" style="padding: 10px 22px; font-size: 14px;" onclick="toggleBackupPanel()">
+              &#128161; Show Backup Questions
+            </button>
+          </div>
+        </div>
+      </section>
+</div> <!-- /#stage -->
+  </div> <!-- /#viewport -->
+
+  <!-- Floating Bilingual Speaker Notes Drawer (#notes) -->
+  <aside id="notes" aria-label="Bilingual Speaker Notes">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; padding-bottom:8px; border-bottom:1.5px solid var(--border-line);">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span class="section-pill amber" style="margin:0;">SPEAKER NOTES</span>
+        <span id="notes-title" style="font-family:var(--font-heading); font-size:14px; font-weight:700; color:var(--text-cyan-hi);"></span>
+      </div>
+      <button class="btn btn-ghost" style="padding:4px 10px; font-size:12px;" onclick="toggleNotes()">Close [N]</button>
+    </div>
+    <div class="grid-2" style="gap:14px;">
+      <div class="inset-box" style="border-left: 4px solid var(--accent-blue);">
+        <div style="font-family:var(--font-heading); font-size:11px; font-weight:700; letter-spacing:0.08em; color:var(--text-blue-hi); margin-bottom:5px;">SPEAK IN ENGLISH</div>
+        <p id="notes-en" style="font-size:13.8px; line-height:1.55; color:var(--text-main);"></p>
+      </div>
+      <div class="inset-box" style="border-left: 4px solid var(--accent-amber);">
+        <div style="font-family:var(--font-heading); font-size:11px; font-weight:700; letter-spacing:0.08em; color:var(--text-amber-hi); margin-bottom:5px;">PANDUAN BM (FOKUS PENYAMPAIAN)</div>
+        <p id="notes-bm" style="font-size:13.8px; line-height:1.55; color:var(--text-body);"></p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Overview Grid Modal (#over) -->
+  <div id="over" role="dialog" aria-modal="true" aria-label="Slide Overview Grid">
+    <div style="max-width:1200px; width:100%; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:12px; padding-bottom:14px; border-bottom:2px solid var(--border-line);">
+      <div>
+        <h2 style="font-size:26px;">SLIDE OVERVIEW - ICT652 CASE STUDY (13 SLIDES)</h2>
+        <p style="font-size:13.5px; color:var(--text-muted); margin-top:3px;">Click any slide to jump directly - Press <strong>O</strong> or <strong>ESC</strong> to close</p>
+      </div>
+      <button class="btn btn-red" onclick="toggleOverview()">Close [ESC]</button>
+    </div>
+    <div class="over-grid" id="over-grid"></div>
+  </div>
+
+  <!-- Floating Bottom Dock (#bar) -->
+  <nav id="bar" aria-label="Presentation Navigation Controls">
+    <button id="prev" onclick="prevSlide()" title="Previous Slide (Left Arrow / PageUp)">&#8592; Prev</button>
+    <span id="cnt">1 / 13</span>
+    <button id="next" onclick="nextSlide()" title="Next Slide (Right Arrow / Space)">Next &#8594;</button>
+    <button id="bOver" onclick="toggleOverview()" title="Overview Grid (Key: O)">&#9638; Overview</button>
+    <button id="bNotes" onclick="toggleNotes()" title="Bilingual Speaker Notes (Key: N)">&#128221; Notes</button>
+    <button id="bTheme" onclick="toggleTheme()" title="Toggle Light / Dark Mode (Key: T)">&#9728; Light</button>
+    <button id="bPdf" onclick="exportToPdf()" title="Export All 13 Slides as Light Mode PDF">&#128196; PDF</button>
+    <button id="bFull" onclick="toggleFullscreen()" title="Fullscreen (Key: F)">&#9974; Full</button>
+  </nav>
+
+  <script>
+    /* =========================================================================
+       1. CORE DECK STATE & AUTO-SCALING (DESKTOP > 900px / MOBILE <= 900px)
+       ========================================================================= */
+    const TOTAL_SLIDES = 13;
+    let currentSlide = 1;
+    let currentTheme = 'dark';
+    let toastTimeout = null;
+
+    // Bilingual Speaker Notes (Zero em dashes, zero en dashes, zero Oxford commas)
+    const SPEAKER_NOTES = {
+      1: {
+        en: "Good morning to our lecturer and classmates. Today our team presents our ICT652 case study on Toxic Behavior and Harassment in Multiplayer Online Games. We will analyze why harassment happens, real-world harm, ethical frameworks, Malaysian cyber laws and practical IT and Non-IT solutions.",
+        bm: "Perkenalkan tajuk kajian kes dan keempat-empat ahli kumpulan secara ringkas. Tekankan tema utama iaitu mengimbangi permainan kompetitif, kebebasan bersuara dan maruah manusia."
+      },
+      2: {
+        en: "Let us start with a quick class poll - raise your hand if you have ever muted voice chat or left a match due to harassment. Globally, the ADL 2022 report shows over 80% of online gamers experience harassment while 77% face severe threats or stalking and 1 in 4 avoid or quit toxic games.",
+        bm: "Jalankan undian kelas secara langsung menggunakan butang Poll di sebelah kiri kemudian hubungkan dengan data rasmi ADL 2022 di sebelah kanan untuk rubrik Issue Background dan Evidence."
+      },
+      3: {
+        en: "First, what counts as toxic harassment? Normal competitive banter teases match gameplay and stops when asked. Toxic harassment crosses the line into real harm. Kwak et al. (ACM CHI 2015) analyzed 10.9 million League of Legends reports across 7 core categories: cyberbullying (Offensive Language and Verbal Abuse) and domain-specific toxicity (Intentional Feeding, Assisting Enemy Team, Negative Attitude, Spamming and Inappropriate Name).",
+        bm: "Jawab 5W1H (WHAT). Klik kedua-dua kad flip untuk tunjukkan perbezaan gurauan biasa dengan gangguan toksik, lalu klik 7 kategori rasmi yang dikaji secara langsung dalam kertas Kwak et al. (2015)."
+      },
+      4: {
+        en: "Who is involved? Four key groups: players and victims, game studios, outside chat apps like Discord or WhatsApp plus regulators like MCMC and PDRM. Over time, abuse grew from simple 2000s text chat to open 2010s voice lobbies and today's cross-platform harassment.",
+        bm: "Jawab 5W1H (WHO dan WHEN). Terangkan 4 kumpulan utama dengan visual di atas kemudian klik tab dekad (2000s, 2010s dan 2020s) untuk tunjukkan evolusi risiko."
+      },
+      5: {
+        en: "Where does this occur? Globally, ranked PC games like Valorant, Call of Duty and CS2 face heavy voice abuse. In Malaysia and Southeast Asia, Mobile Legends and PUBG Mobile dominate and fights often spill into WhatsApp and TikTok. Why do players act like this? John Suler's Online Disinhibition Effect, ELO rank stress, mob mentality and misused free speech.",
+        bm: "Jawab 5W1H (WHERE dan WHY). Bandingkan permainan PC global dengan permainan mudah alih Malaysia serta huraikan 4 punca psikologi berdasarkan kajian John Suler (2004)."
+      },
+      6: {
+        en: "For balanced analysis, in-game communication has clear advantages - fast team strategy, global friendships and teamwork skills. However, when chat turns toxic, players suffer emotional stress, quit games and face real-world threats.",
+        bm: "Penuhi rubrik Depth of Analysis (Advantages vs Risks and Impacts). Jelaskan manfaat komunikasi permainan dahulu sebelum menerangkan kesan negatif apabila sembang menjadi toksik."
+      },
+      7: {
+        en: "To see how online anger turns fatal, look at the official U.S. Department of Justice Wichita swatting case from 2017. A petty $1.50 Call of Duty wager triggered a hoax 911 call, leading to the fatal shooting of innocent father Andrew Finch and a 20-year federal prison sentence for Tyler Barriss.",
+        bm: "Penuhi rubrik Use of Evidence dengan kes rasmi DOJ Wichita. Klik setiap kad langkah (atau tekan Reveal All) untuk menerangkan kronologi kejadian secara teratur."
+      },
+      8: {
+        en: "Now let us apply ICT652 Chapter 1 theories. Kantian Deontology teaches we must never treat teammates as emotional punching bags. Utilitarianism shows unchecked toxicity hurts the peaceful majority. Social Contract Theory reminds us that Terms of Service are a shared safety promise.",
+        bm: "Penuhi rubrik Critical Thinking (Bab 1). Klik setiap tab teori etika dan gunakan contoh mudah dalam permainan supaya mudah difahami audiens."
+      },
+      9: {
+        en: "From Chapter 2 Islamic Ethics, Surah Al-Baqarah (2:83) calls for kind speech, La Darar wa La Dirar forbids causing harm and developers hold an Amanah to protect youth. Under Malaysian law, CMA 1998 Section 233 punishes offensive online harassment while Penal Code Section 507A criminalizes stalking.",
+        bm: "Hubungkan perspektif Islam (Bab 2) dengan undang-undang Malaysia (Akta 588 s.233 serta Kanun Keseksaan s.507A). Klik akordion untuk menonjolkan fakta utama."
+      },
+      10: {
+        en: "How do we solve this? Software alone is not enough - we need both technology and people. IT solutions include real-time AI moderation, phone-number 2FA and reputation matchmaking. Non-IT solutions include MCMC Klik Dengan Bijak education, parent and community rules plus MCMC, PDRM and Cyber999 legal reporting.",
+        bm: "Jawab 5W1H (HOW) dan Recommendations. Anda boleh guna butang penapis Show Both, IT Solutions Only atau Non-IT Solutions Only untuk fokus pada bahagian tertentu."
+      },
+      11: {
+        en: "Here is a proven real-world IT solution: Call of Duty uses Modulate's ToxMod AI. It scans voice tone, volume and context - cutting severe toxicity exposure by 50% while over 80% of warned players did not re-offend. Let us play two live audio samples now.",
+        bm: "Mainkan Sample 1 (panggilan taktikal selamat) kemudian Sample 2 (bahasa kesat dengan dua bunyi beep 1000Hz) untuk demonstrasi langsung di dalam kelas."
+      },
+      12: {
+        en: "To conclude, gaming toxicity is not just a game - it harms real lives. Solving it requires both smart IT tools and strong human values. As future UiTM IT graduates, we must engineer safety and respect into our digital platforms from day one.",
+        bm: "Rumuskan 3 poin utama secara padat dan sebut ayat penutup di bahagian bawah dengan suara yang jelas sebelum membuka sesi Q&A."
+      },
+      13: {
+        en: "Thank you for listening! We now open the floor to our lecturer and classmates for questions. (Note: Wait calmly for audience questions first. Click Show Backup Questions only if nobody asks - and Q1 covers Malaysian CMA 1998 s.233 and Penal Code s.507A.)",
+        bm: "Beri ruang pensyarah dan rakan sekelas bertanya soalan dahulu. Tekan Show Backup Questions hanya jika kelas senyap untuk memaparkan 3 soalan serta jawapan berfakta undang-undang."
+      }
+    };
+
+    /**
+     * Desktop (> 900px): exact 1280x720 auto-scaling.
+     * Mobile (<= 900px): disables transform so vertical responsive cards take over.
+     */
+    function fit() {
+      const stage = document.getElementById('stage');
+      if (!stage) return;
+      if (window.innerWidth <= 900) {
+        stage.style.transform = 'none';
+        return;
+      }
+      const scale = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+      stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      if (!t) return;
+      t.textContent = msg;
+      t.classList.add('show');
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => t.classList.remove('show'), 3200);
+    }
+
+    /**
+     * Theme Switcher - Dark Mode default, Light Mode toggle persisted in localStorage.
+     */
+    function applyTheme(theme, silent) {
+      currentTheme = theme === 'light' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', currentTheme);
+      const btn = document.getElementById('bTheme');
+      if (btn) {
+        btn.innerHTML = currentTheme === 'dark' ? '&#9728; Light' : '&#127769; Dark';
+      }
+      try {
+        localStorage.setItem('ict652_theme_final', currentTheme);
+      } catch (e) {}
+      if (!silent) {
+        showToast(currentTheme === 'light' ? 'Light Mode enabled' : 'Dark Mode enabled');
+      }
+    }
+
+    function toggleTheme() {
+      applyTheme(currentTheme === 'dark' ? 'light' : 'dark', false);
+    }
+
+    function initSavedTheme() {
+      let saved = 'dark';
+      try {
+        const v = localStorage.getItem('ict652_theme_final');
+        if (v === 'light' || v === 'dark') saved = v;
+      } catch (e) {}
+      applyTheme(saved, true);
+    }
+
+    /**
+     * Export PDF in 16:9 Landscape Light Mode via @media print.
+     */
+    let currentEraIdx = 0;
+    let currentEthicsIdx = 0;
+    let isPrinting = false;
+
+    function preparePrintView() {
+      isPrinting = true;
+      stopAudioSim(true);
+
+      // Slide 4: Show all 3 decades side-by-side for PDF
+      const eraBox = document.getElementById('era-content');
+      if (eraBox) {
+        eraBox.style.gridTemplateColumns = 'repeat(3, 1fr)';
+        eraBox.style.alignItems = 'stretch';
+        eraBox.innerHTML = ERAS.map((e) => `
+          <div style="display:flex; flex-direction:column; justify-content:space-between; gap:6px; padding:8px 10px; background:var(--bg-surface); border:1.5px solid var(--card-border); border-radius:9px;">
+            <div>
+              <div style="font-family:var(--font-heading); font-size:11px; font-weight:700; color:${e.color}; text-transform:uppercase;">${e.label}</div>
+              <div style="font-family:var(--font-heading); font-size:14px; font-weight:700; color:var(--text-main); margin:2px 0 5px 0;">${e.title}</div>
+              <ul class="clean-list" style="font-size:12px; gap:3px; line-height:1.35; padding-left:15px;">
+                ${e.points.map((p) => `<li>${p}</li>`).join('')}
+              </ul>
+            </div>
+            <div style="margin-top:4px;">
+              <div style="display:flex; justify-content:space-between; font-size:11.5px; font-weight:700; margin-bottom:3px;">
+                <span>Risk Level</span>
+                <span style="color:${e.color};">${e.risk}%</span>
+              </div>
+              <div class="bar-track" style="height:8px;">
+                <div class="bar-fill" style="width:${e.risk}%; background:${e.color};"></div>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // Slide 8: Show all 3 Chapter 1 ethical frameworks side-by-side for PDF
+      const ethPanel = document.getElementById('eth-panel');
+      if (ethPanel) {
+        ethPanel.style.padding = '22px 26px';
+        ethPanel.style.gap = '14px';
+        ethPanel.innerHTML = `
+          <div style="flex-shrink:0; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <span class="section-pill cyan" style="margin:0;">ALL 3 CHAPTER 1 FRAMEWORKS</span>
+              <h3 style="font-size:25px; margin:5px 0 0 0;">Ethical Analysis: Moral Theories Applied</h3>
+            </div>
+            <span style="font-size:13.5px; font-weight:700; color:var(--text-green-hi);">Verdict: Gaming Toxicity Is Unethical Across All 3 Lenses</span>
+          </div>
+          <div class="grid-3" style="flex:1; gap:15px; align-items:stretch;">
+            <div class="eth-subcard" style="padding:16px 18px; justify-content:space-between; border-top:5px solid var(--accent-blue);">
+              <div>
+                <div class="eth-subcard-label" style="color:var(--text-blue-hi); margin-bottom:6px;">1. KANTIAN DEONTOLOGY</div>
+                <h4 style="font-size:18px; margin-bottom:10px;">Respect Human Dignity</h4>
+                <p style="font-size:14.2px; line-height:1.52; color:var(--text-body);">
+                  <strong>Rule:</strong> Never treat people merely as tools (Categorical Imperative).
+                </p>
+              </div>
+              <div class="inset-box" style="font-size:13.5px; line-height:1.45;">
+                <strong>Application:</strong> Slurs treat teammates as emotional punching bags. Studios have a clear <strong>duty of care</strong> regardless of cost.
+              </div>
+            </div>
+            <div class="eth-subcard" style="padding:16px 18px; justify-content:space-between; border-top:5px solid var(--accent-red);">
+              <div>
+                <div class="eth-subcard-label" style="color:var(--text-red-hi); margin-bottom:6px;">2. UTILITARIANISM</div>
+                <h4 style="font-size:18px; margin-bottom:10px;">Greatest Good for Most People</h4>
+                <p style="font-size:14.2px; line-height:1.52; color:var(--text-body);">
+                  <strong>Rule:</strong> Maximize collective happiness and minimize overall suffering.
+                </p>
+              </div>
+              <div class="inset-box" style="font-size:13.5px; line-height:1.45;">
+                <strong>Application:</strong> Letting a toxic minority ruin matches for <strong>90% of peaceful gamers</strong> produces net harm and player churn.
+              </div>
+            </div>
+            <div class="eth-subcard" style="padding:16px 18px; justify-content:space-between; border-top:5px solid var(--accent-green);">
+              <div>
+                <div class="eth-subcard-label" style="color:var(--text-green-hi); margin-bottom:6px;">3. SOCIAL CONTRACT THEORY</div>
+                <h4 style="font-size:18px; margin-bottom:10px;">Terms of Service Safety Pact</h4>
+                <p style="font-size:14.2px; line-height:1.52; color:var(--text-body);">
+                  <strong>Rule:</strong> Members follow shared community rules for mutual safety and fairness.
+                </p>
+              </div>
+              <div class="inset-box" style="font-size:13.5px; line-height:1.45;">
+                <strong>Application:</strong> Players accept the game&rsquo;s <strong>Terms of Service (ToS)</strong>. Abuse or weak enforcement breaks that trust pact.
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // Slide 11: Paint clean Light Mode audio waveform for PDF
+      renderSpectrogramFrame();
+    }
+
+    function restoreInteractiveView() {
+      isPrinting = false;
+      const eraBox = document.getElementById('era-content');
+      if (eraBox) {
+        eraBox.style.gridTemplateColumns = '';
+        eraBox.style.alignItems = 'center';
+      }
+      const ethPanel = document.getElementById('eth-panel');
+      if (ethPanel) {
+        ethPanel.style.padding = '';
+        ethPanel.style.gap = '';
+      }
+      selectEra(currentEraIdx);
+      selectEthics(currentEthicsIdx);
+      renderSpectrogramFrame();
+    }
+
+    function exportToPdf() {
+      preparePrintView();
+      showToast("Print dialog opened: Choose 'Save as PDF' and enable 'Background graphics'");
+      setTimeout(() => {
+        window.print();
+      }, 260);
+    }
+
+    /**
+     * Navigate to slide 1..13, update hash, progress bar, notes and auto-stop Slide 11 audio.
+     */
+    function goTo(num) {
+      const target = Math.max(1, Math.min(TOTAL_SLIDES, num));
+      if (currentSlide === 11 && target !== 11) {
+        stopAudioSim(true);
+      }
+      currentSlide = target;
+
+      const slides = document.querySelectorAll('#stage .slide');
+      let activeTitle = '';
+      slides.forEach((s) => {
+        const n = parseInt(s.getAttribute('data-slide'), 10);
+        const isCurrent = n === currentSlide;
+        s.classList.toggle('active', isCurrent);
+        if (isCurrent) activeTitle = s.getAttribute('data-title') || `Slide ${n}`;
+      });
+
+      document.getElementById('prog').style.width = `${(currentSlide / TOTAL_SLIDES) * 100}%`;
+      document.getElementById('cnt').textContent = `${currentSlide} / ${TOTAL_SLIDES}`;
+      document.getElementById('prev').disabled = currentSlide === 1;
+      document.getElementById('next').disabled = currentSlide === TOTAL_SLIDES;
+
+      const note = SPEAKER_NOTES[currentSlide] || { en: '', bm: '' };
+      document.getElementById('notes-title').textContent = `Slide ${currentSlide} - ${activeTitle}`;
+      document.getElementById('notes-en').textContent = note.en;
+      document.getElementById('notes-bm').textContent = note.bm;
+
+      const nextHash = `#slide-${currentSlide}`;
+      if (window.location.hash !== nextHash) {
+        try { history.replaceState(null, '', nextHash); }
+        catch (e) { window.location.hash = nextHash; }
+      }
+
+      const over = document.getElementById('over');
+      if (over.classList.contains('open')) {
+        over.classList.remove('open');
+        document.getElementById('bOver').classList.remove('active-tool');
+      }
+
+      if (window.innerWidth <= 900) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function nextSlide() { if (currentSlide < TOTAL_SLIDES) goTo(currentSlide + 1); }
+    function prevSlide() { if (currentSlide > 1) goTo(currentSlide - 1); }
+
+    function toggleNotes() {
+      const open = document.getElementById('notes').classList.toggle('open');
+      document.getElementById('bNotes').classList.toggle('active-tool', open);
+    }
+
+    function toggleOverview() {
+      const over = document.getElementById('over');
+      const open = over.classList.toggle('open');
+      document.getElementById('bOver').classList.toggle('active-tool', open);
+      if (open) renderOverview();
+    }
+
+    function renderOverview() {
+      const grid = document.getElementById('over-grid');
+      const slides = document.querySelectorAll('#stage .slide');
+      grid.innerHTML = '';
+      slides.forEach((s) => {
+        const n = parseInt(s.getAttribute('data-slide'), 10);
+        const title = s.getAttribute('data-title') || `Slide ${n}`;
+        const pill = s.querySelector('.section-pill');
+        const tagText = pill ? pill.textContent : `SLIDE ${n}`;
+        const btn = document.createElement('button');
+        btn.className = `thumb-card ${n === currentSlide ? 'current' : ''}`;
+        btn.onclick = () => goTo(n);
+        btn.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:7px;">
+            <span style="font-family:var(--font-heading); font-size:18px; font-weight:700; color:var(--text-cyan-hi);">SLIDE ${n}</span>
+            <span style="font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">${tagText}</span>
+          </div>
+          <div style="font-size:14px; font-weight:700; color:var(--text-main); line-height:1.35;">${title}</div>
+        `;
+        grid.appendChild(btn);
+      });
+    }
+
+    function toggleFullscreen() {
+      const blockedMsg = 'Fullscreen is blocked inside Preview mode. Download this HTML file and open it in Google Chrome for lecture-hall fullscreen.';
+      try {
+        if (!document.fullscreenElement) {
+          if (!document.documentElement.requestFullscreen) {
+            showToast(blockedMsg);
+            return;
+          }
+          document.documentElement.requestFullscreen()
+            .then(() => showToast('Fullscreen enabled'))
+            .catch(() => showToast(blockedMsg));
+        } else if (document.exitFullscreen) {
+          document.exitFullscreen()
+            .then(() => showToast('Exited fullscreen'))
+            .catch(() => {});
+        }
+      } catch (e) {
+        showToast(blockedMsg);
+      }
+    }
+
+    function parseHash() {
+      const m = window.location.hash.match(/^#slide-(\d+)$/i);
+      if (m) {
+        let n = parseInt(m[1], 10);
+        if (n === 0) n = 1;
+        if (n >= 1 && n <= TOTAL_SLIDES) {
+          goTo(n);
+          return;
+        }
+      }
+      goTo(currentSlide);
+    }
+
+    /* =========================================================================
+       2. SLIDE 2: LIVE AUDIENCE POLL
+       ========================================================================= */
+    const pollCounts = [0, 0, 0];
+    const pollStack = [];
+
+    function renderPoll() {
+      const total = pollCounts[0] + pollCounts[1] + pollCounts[2];
+      document.getElementById('poll-total').textContent = `Total Votes: ${total}`;
+      for (let i = 0; i < 3; i++) {
+        const pct = total === 0 ? 0 : Math.round((pollCounts[i] / total) * 100);
+        document.getElementById(`poll-stat-${i}`).textContent = `${pollCounts[i]} vote${pollCounts[i] === 1 ? '' : 's'} (${pct}%)`;
+        document.getElementById(`poll-bar-${i}`).style.width = `${pct}%`;
+      }
+    }
+
+    function votePoll(i) {
+      pollCounts[i]++;
+      pollStack.push(i);
+      renderPoll();
+    }
+
+    function undoPoll() {
+      if (!pollStack.length) { showToast('Nothing to undo'); return; }
+      const last = pollStack.pop();
+      pollCounts[last] = Math.max(0, pollCounts[last] - 1);
+      renderPoll();
+      showToast('Last vote undone');
+    }
+
+    function resetPoll() {
+      pollCounts[0] = 0; pollCounts[1] = 0; pollCounts[2] = 0;
+      pollStack.length = 0;
+      renderPoll();
+      showToast('Poll reset to 0');
+    }
+
+    /* =========================================================================
+       3. SLIDE 3 & 7: FLIP CARDS & FORM SELECTOR PILLS
+       ========================================================================= */
+    function toggleFlip(scene) {
+      const card = scene.querySelector('.flip-card');
+      if (card) card.classList.toggle('flipped');
+    }
+
+    const HARM_EXAMPLES = [
+      '<strong>Offensive Language [Cyberbullying]:</strong> The most frequently reported toxic behavior in Kwak et al. (2015) &mdash; profane or offensive chat mainly reported by teammates inside ally chat (avg. 1.691 reports/match).',
+      '<strong>Verbal Abuse [Cyberbullying]:</strong> Direct hostile insults and abusive language directed at players in chat; grouped with Offensive Language under cyberbullying (avg. 1.740 reports/match; 9.7%&ndash;17.1% pardoned across regions).',
+      '<strong>Intentional Feeding [Domain-Specific Toxicity]:</strong> Dying to the opposing team on purpose &mdash; often after a failed surrender vote &mdash; recording the highest reports per match (2.091) and lowest winning ratio (under 15%).',
+      '<strong>Assisting Enemy Team [Domain-Specific Toxicity]:</strong> Deliberately helping or cooperating with opponents to sabotage one&rsquo;s own team; 2nd highest reports per match (1.876) and punished in over 80% of Tribunal cases.',
+      '<strong>Negative Attitude [Domain-Specific Toxicity]:</strong> Defeatist or uncooperative conduct that undermines team morale and cohesion during play (avg. 1.696 reports/match; strongly concentrated on losing teams).',
+      '<strong>Spamming [Domain-Specific Toxicity]:</strong> Flooding in-game chat repeatedly to disrupt coordination (avg. 1.769 reports/match); recorded the highest Tribunal pardon rate (26.1% in Korea) due to subjective severity.',
+      '<strong>Inappropriate Name [Domain-Specific Toxicity]:</strong> Offensive player usernames visible equally to both sides (avg. 1.602 reports/match) &mdash; the only category reported more by enemies (23,966) than allies (16,339), proving in-group favoritism.'
+    ];
+
+    function selectHarmType(idx) {
+      document.querySelectorAll('#harm-pills .pill-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+      document.getElementById('harm-example').innerHTML = HARM_EXAMPLES[idx];
+    }
+
+    let swatRevealed = false;
+    function toggleAllSwat() {
+      swatRevealed = !swatRevealed;
+      document.querySelectorAll('.swat-scene .flip-card').forEach((c) => c.classList.toggle('flipped', swatRevealed));
+      document.getElementById('swat-toggle-btn').textContent = swatRevealed ? 'Reset' : 'Reveal All';
+    }
+
+    /* =========================================================================
+       4. SLIDE 4: DECADE TIMELINE STEPPER
+       ========================================================================= */
+    const ERAS = [
+      {
+        label: '2000s - Text Era',
+        risk: 35,
+        color: 'var(--accent-cyan)',
+        title: 'Typed Text Chat in Early Online & LAN Games',
+        points: [
+          'Players mostly typed in chat boxes or played together in local cyber cafes.',
+          'Rude messages existed yet simple word filters and local admins helped control them.',
+          'Abuse usually stayed inside the match and was easier to ignore.'
+        ]
+      },
+      {
+        label: '2010s - Open Voice Era',
+        risk: 72,
+        color: 'var(--accent-amber)',
+        title: 'Live Voice Lobbies with Almost No Moderation',
+        points: [
+          'Always-on microphones connected strangers worldwide in fast competitive matches.',
+          'Because live voice was not scanned, harsh insults often went unpunished.',
+          'Many gamers started muting their microphones permanently to avoid verbal attacks.'
+        ]
+      },
+      {
+        label: '2020s - Cross-Platform & AI Era',
+        risk: 94,
+        color: 'var(--accent-red)',
+        title: 'Social Media Spillover Countered by AI Moderation',
+        points: [
+          'Mobile esports boomed in Malaysia & SEA while fights spread to Discord, WhatsApp and TikTok.',
+          'Extreme cases included organized doxxing, cyber-stalking and fatal swatting.',
+          'Today studios are fighting back using real-time AI voice scanning and stricter laws.'
+        ]
+      }
+    ];
+
+    function selectEra(idx) {
+      currentEraIdx = idx;
+      for (let i = 0; i < 3; i++) {
+        document.getElementById(`era-${i}`).classList.toggle('active', i === idx);
+      }
+      const e = ERAS[idx];
+      document.getElementById('era-content').innerHTML = `
+        <div class="col-7">
+          <div style="font-family:var(--font-heading); font-size:11.5px; font-weight:700; color:${e.color}; text-transform:uppercase; margin-bottom:3px;">${e.label}</div>
+          <h4 style="font-family:var(--font-heading); font-size:17px; font-weight:700; color:var(--text-main); margin-bottom:6px;">${e.title}</h4>
+          <ul class="clean-list" style="font-size:13.8px; gap:5px;">
+            ${e.points.map((p) => `<li>${p}</li>`).join('')}
+          </ul>
+        </div>
+        <div class="col-5" style="display:flex; flex-direction:column; gap:8px; padding-left:14px; border-left:2px solid var(--border-line);">
+          <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:700;">
+            <span>Harm Risk Level</span>
+            <span style="color:${e.color};">${e.risk}%</span>
+          </div>
+          <div class="bar-track" style="height:13px;">
+            <div class="bar-fill" style="width:${e.risk}%; background:${e.color};"></div>
+          </div>
+          <p style="font-size:12.5px; color:var(--text-muted); line-height:1.42;">
+            As live voice chat and social apps expanded, manual reporting could no longer keep up.
+          </p>
+        </div>
+      `;
+    }
+
+    /* =========================================================================
+       6. SLIDE 8: OPTIMIZED ETHICS TABS (BALANCED LAYOUT, SAME CONTENT)
+       ========================================================================= */
+    function selectEthics(idx) {
+      currentEthicsIdx = idx;
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`eth-${i}`);
+        if (btn) btn.classList.toggle('active', i === idx);
+      }
+      const panel = document.getElementById('eth-panel');
+      if (!panel) return;
+
+      if (idx === 0) {
+        panel.innerHTML = `
+          <div style="flex-shrink:0;">
+            <span class="section-pill" style="margin:0;">1. KANTIAN DEONTOLOGY (DUTY ETHICS)</span>
+            <h3 style="font-size:32px; margin:6px 0 4px 0;">Treat Every Player as a Human Being</h3>
+          </div>
+          <div class="eth-cards-grid">
+            <div class="eth-subcard" style="border-left:5px solid var(--accent-blue);">
+              <div class="eth-subcard-label" style="color:var(--text-blue-hi);">CORE PRINCIPLE</div>
+              <p class="eth-subcard-text">
+                Immanuel Kant&rsquo;s Categorical Imperative states we must always respect human dignity - <strong>never treat people merely as tools</strong>.
+              </p>
+            </div>
+            <div class="eth-subcard" style="border-left:5px solid var(--accent-red);">
+              <div class="eth-subcard-label" style="color:var(--text-red-hi);">GAMING APPLICATION</div>
+              <p class="eth-subcard-text">
+                Screaming slurs at teammates uses them as emotional punching bags. Studios also hold a clear <strong>duty of care</strong> to protect players regardless of cost.
+              </p>
+            </div>
+          </div>
+        `;
+      } else if (idx === 1) {
+        panel.innerHTML = `
+          <div style="flex-shrink:0;">
+            <span class="section-pill red" style="margin:0;">2. UTILITARIANISM (OUTCOME ETHICS)</span>
+            <h3 style="font-size:32px; margin:6px 0 4px 0;">Greatest Good for the Greatest Number</h3>
+          </div>
+          <div class="eth-cards-grid">
+            <div class="eth-subcard" style="border-left:5px solid var(--accent-cyan);">
+              <div class="eth-subcard-label" style="color:var(--text-cyan-hi);">CORE PRINCIPLE</div>
+              <p class="eth-subcard-text">
+                Right actions should bring the <strong>most happiness and least harm</strong> to the largest number of people.
+              </p>
+            </div>
+            <div class="eth-subcard" style="border-left:5px solid var(--accent-red);">
+              <div class="eth-subcard-label" style="color:var(--text-red-hi);">GAMING APPLICATION</div>
+              <p class="eth-subcard-text">
+                Letting a toxic minority ruin matches for <strong>90% of peaceful gamers</strong> produces net harm and pushes loyal players to quit.
+              </p>
+            </div>
+          </div>
+        `;
+      } else if (idx === 2) {
+        panel.innerHTML = `
+          <div style="flex-shrink:0;">
+            <span class="section-pill green" style="margin:0;">3. SOCIAL CONTRACT THEORY (FAIR RULES)</span>
+            <h3 style="font-size:32px; margin:6px 0 4px 0;">Terms of Service Are a Shared Trust Pact</h3>
+          </div>
+          <div class="eth-cards-grid">
+            <div class="eth-subcard" style="border-left:5px solid var(--accent-green);">
+              <div class="eth-subcard-label" style="color:var(--text-green-hi);">CORE PRINCIPLE</div>
+              <p class="eth-subcard-text">
+                Members agree to follow <strong>shared community rules</strong> so everyone enjoys a fair, peaceful and safe space.
+              </p>
+            </div>
+            <div class="eth-subcard" style="border-left:5px solid var(--accent-amber);">
+              <div class="eth-subcard-label" style="color:var(--text-amber-hi);">GAMING APPLICATION</div>
+              <p class="eth-subcard-text">
+                Players accept the game&rsquo;s <strong>Terms of Service (ToS)</strong> before playing. Harassing others - or studios failing to enforce rules - breaks that contract.
+              </p>
+            </div>
+          </div>
+        `;
+      } else {
+        panel.innerHTML = `
+          <div style="flex-shrink:0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <span class="section-pill cyan" style="margin:0;">SIDE-BY-SIDE COMPARISON</span>
+            <span style="font-size:15px; font-weight:700; color:var(--text-green-hi);">All 3 Chapter 1 theories agree: gaming toxicity is unethical</span>
+          </div>
+          <div class="eth-table-wrap">
+            <table class="eth-table">
+              <thead>
+                <tr>
+                  <th>Moral Theory</th>
+                  <th>Core Principle</th>
+                  <th>Gaming Application</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Kantian Deontology</strong></td>
+                  <td>Respect human dignity - never treat people merely as tools</td>
+                  <td>Abusing teammates breaks human dignity and studio duty of care</td>
+                </tr>
+                <tr>
+                  <td><strong>Utilitarianism</strong></td>
+                  <td>Greatest happiness and least harm for the greatest number</td>
+                  <td>A toxic minority ruins matches for 90% of peaceful gamers</td>
+                </tr>
+                <tr>
+                  <td><strong>Social Contract</strong></td>
+                  <td>Follow shared community rules for a safe space</td>
+                  <td>Breaking Terms of Service (ToS) destroys community trust</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+    }
+
+    /* =========================================================================
+       6. SLIDE 9 ACCORDION & SLIDE 10 WORKING IT/NON-IT FILTER
+       ========================================================================= */
+    function toggleAcc(headBtn) {
+      headBtn.parentElement.classList.toggle('open');
+    }
+
+    function filterSolutions(mode) {
+      const itCard = document.getElementById('card-it');
+      const nonItCard = document.getElementById('card-nonit');
+      const grid = document.getElementById('sol-grid');
+
+      document.getElementById('sol-both').classList.toggle('active', mode === 'both');
+      document.getElementById('sol-it').classList.toggle('active', mode === 'it');
+      document.getElementById('sol-nonit').classList.toggle('active', mode === 'nonit');
+
+      if (mode === 'both') {
+        itCard.classList.remove('sol-hidden');
+        nonItCard.classList.remove('sol-hidden');
+        itCard.style.display = 'flex';
+        nonItCard.style.display = 'flex';
+        grid.classList.remove('single-col');
+      } else if (mode === 'it') {
+        itCard.classList.remove('sol-hidden');
+        nonItCard.classList.add('sol-hidden');
+        itCard.style.display = 'flex';
+        nonItCard.style.display = 'none';
+        grid.classList.add('single-col');
+      } else {
+        itCard.classList.add('sol-hidden');
+        nonItCard.classList.remove('sol-hidden');
+        itCard.style.display = 'none';
+        nonItCard.style.display = 'flex';
+        grid.classList.add('single-col');
+      }
+    }
+
+    /* =========================================================================
+       8. SLIDE 11: LIVE AUDIBLE TOXMOD SPECTROGRAM (WEB AUDIO + SPEECH API)
+       ========================================================================= */
+    let audioCtx = null;
+    let isMuted = false;
+    let simState = 'idle';
+    let wavePhase = 0;
+    let runCounter = 0;
+    let timers = [];
+    let audioNodes = [];
+    let speechVoices = [];
+
+    if ('speechSynthesis' in window) {
+      const loadV = () => { speechVoices = window.speechSynthesis.getVoices() || []; };
+      loadV();
+      window.speechSynthesis.onvoiceschanged = loadV;
+    }
+
+    function getAudioCtx() {
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) return null;
+      if (!audioCtx) audioCtx = new Ctx();
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume().catch(() => {});
+      }
+      return audioCtx;
+    }
+
+    function later(fn, ms, id) {
+      const t = setTimeout(() => {
+        if (id === runCounter) fn();
+      }, ms);
+      timers.push(t);
+    }
+
+    function playTone(freq, dur, type, vol, offset) {
+      if (isMuted) return;
+      const ctx = getAudioCtx();
+      if (!ctx) return;
+      try {
+        const start = ctx.currentTime + (offset || 0);
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = type || 'sine';
+        osc.frequency.setValueAtTime(freq, start);
+        gain.gain.setValueAtTime(0.0001, start);
+        gain.gain.linearRampToValueAtTime(vol, start + 0.015);
+        gain.gain.setValueAtTime(vol, Math.max(start + 0.02, start + dur - 0.025));
+        gain.gain.exponentialRampToValueAtTime(0.0001, start + dur);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(start);
+        osc.stop(start + dur + 0.02);
+        audioNodes.push(osc);
+      } catch (e) {}
+    }
+
+    function playRadioClick(isHarsh) {
+      if (isMuted) return;
+      const ctx = getAudioCtx();
+      if (!ctx) return;
+      try {
+        const dur = 0.14;
+        const size = Math.floor(ctx.sampleRate * dur);
+        const buf = ctx.createBuffer(1, size, ctx.sampleRate);
+        const ch = buf.getChannelData(0);
+        for (let i = 0; i < size; i++) ch[i] = (Math.random() * 2 - 1) * 0.4;
+        const src = ctx.createBufferSource();
+        src.buffer = buf;
+
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.value = isHarsh ? 1300 : 2100;
+
+        const gain = ctx.createGain();
+        const now = ctx.currentTime;
+        gain.gain.setValueAtTime(0.001, now);
+        gain.gain.linearRampToValueAtTime(0.22, now + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + dur);
+
+        src.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+        src.start(now);
+        src.stop(now + dur + 0.02);
+        audioNodes.push(src);
+
+        if (isHarsh) {
+          playTone(620, 0.09, 'sawtooth', 0.14, 0.03);
+        } else {
+          playTone(1500, 0.06, 'sine', 0.14, 0.03);
+          playTone(1900, 0.07, 'sine', 0.14, 0.09);
+        }
+      } catch (e) {}
+    }
+
+    function playCensorBeep(durSec) {
+      playTone(1000, durSec, 'sine', 0.30, 0);
+      playTone(1000, durSec, 'triangle', 0.10, 0);
+    }
+
+    function playSafeChime() {
+      playTone(523.25, 0.12, 'sine', 0.18, 0);
+      playTone(659.25, 0.14, 'sine', 0.18, 0.10);
+      playTone(783.99, 0.24, 'sine', 0.20, 0.20);
+    }
+
+    function playAlertTone() {
+      playTone(880, 0.12, 'sawtooth', 0.16, 0);
+      playTone(1240, 0.12, 'sawtooth', 0.18, 0.13);
+      playTone(880, 0.12, 'sawtooth', 0.16, 0.26);
+      playTone(1240, 0.20, 'sawtooth', 0.18, 0.39);
+    }
+
+    function playVoiceFallback(words, toxic) {
+      if (isMuted) return;
+      const base = toxic ? 230 : 340;
+      for (let i = 0; i < Math.min(words, 7); i++) {
+        playTone(base + ((i * 47) % 120), 0.11, toxic ? 'sawtooth' : 'triangle', 0.09, i * 0.16);
+      }
+    }
+
+    function speakLine(text, opts, id, onDone) {
+      let doneCalled = false;
+      const finish = () => {
+        if (doneCalled || id !== runCounter) return;
+        doneCalled = true;
+        onDone();
+      };
+      const words = text.trim().split(/\s+/).length;
+      const estMs = Math.max(1050, Math.round((words / (opts.rate * 2.5)) * 1000) + 480);
+
+      if (isMuted) {
+        later(finish, Math.max(850, words * 210), id);
+        return;
+      }
+
+      if ('speechSynthesis' in window) {
+        try {
+          window.speechSynthesis.cancel();
+          const u = new SpeechSynthesisUtterance(text);
+          u.lang = 'en-US';
+          u.rate = opts.rate || 1.12;
+          u.pitch = opts.pitch || 1.0;
+          u.volume = 1.0;
+          const vList = speechVoices.length ? speechVoices : (window.speechSynthesis.getVoices() || []);
+          const v = vList.find((x) => /en(-|_)(US|GB)/i.test(x.lang)) || vList.find((x) => /en/i.test(x.lang));
+          if (v) u.voice = v;
+
+          let started = false;
+          u.onstart = () => { started = true; };
+          u.onend = () => finish();
+          u.onerror = () => {
+            if (!started) playVoiceFallback(words, opts.toxic);
+            later(finish, 750, id);
+          };
+          window.speechSynthesis.speak(u);
+
+          later(() => {
+            if (!started && !doneCalled && id === runCounter) {
+              playVoiceFallback(words, opts.toxic);
+            }
+          }, 420, id);
+
+          later(finish, estMs + 1000, id);
+          return;
+        } catch (e) {}
+      }
+
+      playVoiceFallback(words, opts.toxic);
+      later(finish, Math.min(2300, words * 200 + 300), id);
+    }
+
+    function stopAudioSim(silent) {
+      runCounter++;
+      timers.forEach((t) => clearTimeout(t));
+      timers = [];
+      audioNodes.forEach((n) => { try { n.stop(); } catch (e) {} });
+      audioNodes = [];
+      if ('speechSynthesis' in window) {
+        try { window.speechSynthesis.cancel(); } catch (e) {}
+      }
+      simState = 'idle';
+
+      const badge = document.getElementById('audio-badge');
+      const tr = document.getElementById('audio-transcript');
+      const vd = document.getElementById('audio-verdict');
+      if (badge) {
+        badge.textContent = 'READY • CLICK A SAMPLE TO LISTEN';
+        badge.style.background = 'var(--bg-soft-green)';
+        badge.style.color = 'var(--text-green-hi)';
+        badge.style.borderColor = 'var(--accent-green)';
+      }
+      if (!silent && tr && vd) {
+        tr.textContent = 'Audio stopped. Press Sample 1 or Sample 2 to test AI voice moderation.';
+        vd.style.color = 'var(--text-blue-hi)';
+        vd.textContent = 'Status: Standby - Monitoring Volume, Tone and Context';
+      }
+    }
+
+    function toggleMute() {
+      isMuted = !isMuted;
+      const btn = document.getElementById('btn-mute');
+      if (isMuted) {
+        if ('speechSynthesis' in window) { try { window.speechSynthesis.cancel(); } catch (e) {} }
+        btn.innerHTML = '&#128263; Muted';
+        btn.className = 'btn btn-red';
+        showToast('Audio muted (visual demo still runs)');
+      } else {
+        getAudioCtx();
+        btn.innerHTML = '&#128266; Sound: ON';
+        btn.className = 'btn btn-green';
+        showToast('Audio sound enabled');
+      }
+    }
+
+    function playSample1() {
+      stopAudioSim(true);
+      const id = runCounter;
+      getAudioCtx();
+
+      simState = 'safe-play';
+      const badge = document.getElementById('audio-badge');
+      const tr = document.getElementById('audio-transcript');
+      const vd = document.getElementById('audio-verdict');
+
+      badge.textContent = 'PLAYING SAMPLE 1 • TACTICAL CALLOUT';
+      badge.style.background = 'var(--bg-soft-blue)';
+      badge.style.color = 'var(--text-blue-hi)';
+      badge.style.borderColor = 'var(--accent-blue)';
+
+      tr.innerHTML = '&ldquo;Enemy on left flank! Cover B site now!&rdquo;';
+      vd.style.color = 'var(--text-blue-hi)';
+      vd.textContent = 'AI Scanning: Loud voice detected - checking tone and context...';
+
+      playRadioClick(false);
+
+      later(() => {
+        speakLine(
+          'Enemy on left flank! Cover B site now!',
+          { rate: 1.15, pitch: 1.08, toxic: false },
+          id,
+          () => {
+            playSafeChime();
+            simState = 'safe-done';
+            badge.textContent = 'ALLOWED • SAFE TEAMWORK';
+            badge.style.background = 'var(--bg-soft-green)';
+            badge.style.color = 'var(--text-green-hi)';
+            badge.style.borderColor = 'var(--accent-green)';
+            vd.style.color = 'var(--text-green-hi)';
+            vd.textContent = 'AI Verdict: ALLOWED (Safe Teamwork) - Excited callout with zero abuse';
+          }
+        );
+      }, 210, id);
+    }
+
+    function playSample2() {
+      stopAudioSim(true);
+      const id = runCounter;
+      getAudioCtx();
+
+      simState = 'toxic-play';
+      const badge = document.getElementById('audio-badge');
+      const tr = document.getElementById('audio-transcript');
+      const vd = document.getElementById('audio-verdict');
+
+      badge.textContent = 'PLAYING SAMPLE 2 • HOSTILE TONE DETECTED';
+      badge.style.background = 'var(--bg-soft-red)';
+      badge.style.color = 'var(--text-red-hi)';
+      badge.style.borderColor = 'var(--accent-red)';
+
+      tr.innerHTML = '&ldquo;Hey you useless ...&rdquo;';
+      vd.style.color = 'var(--text-amber-hi)';
+      vd.textContent = 'AI Scanning: Aggressive pitch spike - checking for abuse...';
+
+      playRadioClick(true);
+
+      later(() => {
+        speakLine(
+          'Hey you useless',
+          { rate: 1.12, pitch: 0.92, toxic: true },
+          id,
+          () => {
+            simState = 'bleep';
+            playCensorBeep(0.42);
+            tr.innerHTML = '&ldquo;Hey you useless <span class="redact-tag">[REDACTED SLUR]</span> ...&rdquo;';
+            vd.style.color = 'var(--accent-red)';
+            vd.textContent = 'AI Alert: Severe insult intercepted and censored!';
+
+            later(() => {
+              simState = 'toxic-play';
+              tr.innerHTML = '&ldquo;Hey you useless <span class="redact-tag">[REDACTED SLUR]</span> get out of this match, you ...&rdquo;';
+              speakLine(
+                'get out of this match, you',
+                { rate: 1.14, pitch: 0.90, toxic: true },
+                id,
+                () => {
+                  simState = 'bleep';
+                  playCensorBeep(0.38);
+                  tr.innerHTML = '&ldquo;Hey you useless <span class="redact-tag">[REDACTED SLUR]</span> get out of this match, you <span class="redact-tag">[REDACTED SLUR]</span>!&rdquo;';
+
+                  later(() => {
+                    playAlertTone();
+                    simState = 'toxic-done';
+                    badge.textContent = 'FLAGGED • AUTO-MUTED & LOGGED';
+                    badge.style.background = 'var(--accent-red)';
+                    badge.style.color = '#ffffff';
+                    badge.style.borderColor = 'var(--ink-black)';
+                    vd.style.color = 'var(--accent-red)';
+                    vd.textContent = 'AI Verdict: FLAGGED (Auto-Muted & Logged) - High-confidence voice harassment';
+                  }, 420, id);
+                }
+              );
+            }, 460, id);
+          }
+        );
+      }, 210, id);
+    }
+
+    function renderSpectrogramFrame() {
+      const canvas = document.getElementById('spectroCanvas');
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        const w = canvas.width;
+        const h = canvas.height;
+        const light = isPrinting || currentTheme === 'light';
+
+        ctx.fillStyle = light ? '#f1f5f9' : '#070a10';
+        ctx.fillRect(0, 0, w, h);
+
+        ctx.strokeStyle = light ? 'rgba(15, 23, 42, 0.1)' : 'rgba(148, 163, 184, 0.12)';
+        ctx.lineWidth = 1;
+        for (let y = 26; y < h; y += 30) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(w, y);
+          ctx.stroke();
+        }
+
+        const bars = 44;
+        const barW = (w - 28) / bars;
+        const active = simState === 'safe-play' || simState === 'toxic-play' || simState === 'bleep';
+        wavePhase += active ? 0.15 : 0.04;
+        let peak = 0.08;
+
+        for (let i = 0; i < bars; i++) {
+          let amp = 0.12;
+          let col = light ? '#2563eb' : '#00e5ff';
+
+          if (simState === 'idle' || simState === 'safe-done') {
+            amp = 0.10 + 0.08 * Math.abs(Math.sin(wavePhase + i * 0.25));
+            col = simState === 'safe-done' ? (light ? '#059669' : '#10b981') : (light ? '#0284c7' : '#00e5ff');
+          } else if (simState === 'safe-play') {
+            amp = 0.34 + 0.42 * Math.abs(Math.sin(wavePhase * 1.1 + i * 0.3));
+            col = i % 2 === 0 ? '#2563eb' : (light ? '#0284c7' : '#00e5ff');
+          } else if (simState === 'toxic-play') {
+            amp = 0.44 + 0.48 * Math.abs(Math.sin(wavePhase * 1.85 + i * 0.58) * Math.cos(wavePhase + i * 0.2));
+            col = amp > 0.68 ? '#ff4757' : '#fb7185';
+          } else if (simState === 'bleep') {
+            const d = Math.abs(i - bars / 2) / (bars / 2);
+            amp = 0.88 - d * 0.45 + 0.05 * Math.sin(wavePhase * 4 + i);
+            col = '#ff4757';
+          } else if (simState === 'toxic-done') {
+            amp = 0.14 + 0.07 * Math.abs(Math.sin(wavePhase + i * 0.3));
+            col = '#ff4757';
+          }
+
+          if (amp > peak) peak = amp;
+          const bh = Math.max(8, Math.min(h - 22, amp * (h - 22)));
+          const x = 14 + i * barW;
+          const y = (h - bh) / 2;
+          ctx.fillStyle = col;
+          ctx.fillRect(x, y, barW - 3.5, bh);
+        }
+
+        if (simState === 'toxic-play' || simState === 'bleep' || simState === 'toxic-done') {
+          ctx.strokeStyle = '#ff4757';
+          ctx.setLineDash([7, 5]);
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(0, 24);
+          ctx.lineTo(w, 24);
+          ctx.stroke();
+          ctx.setLineDash([]);
+
+          ctx.fillStyle = light ? '#b91c1c' : '#ff6b7a';
+          ctx.font = 'bold 11.5px Space Grotesk, Segoe UI, sans-serif';
+          ctx.fillText(simState === 'bleep' ? '1000Hz CENSOR BEEP - SLUR BLOCKED' : 'TOXICITY THRESHOLD EXCEEDED - AI FLAG', 14, 17);
+        }
+
+        const m = document.getElementById('audio-meter');
+        const db = document.getElementById('audio-db');
+        if (m && db) {
+          m.style.width = `${Math.min(100, Math.round(peak * 100))}%`;
+          db.textContent = `${Math.round(-48 + peak * 46)} dB`;
+        }
+      }
+    }
+
+    function drawSpectrogram() {
+      renderSpectrogramFrame();
+      requestAnimationFrame(drawSpectrogram);
+    }
+
+    /* =========================================================================
+       8. SLIDE 13: Q&A TIMER & TOGGLEABLE BACKUP QUESTIONS
+       ========================================================================= */
+    let qaSeconds = 180;
+    let qaTimerId = null;
+
+    function formatTimer(s) {
+      return `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+    }
+
+    function toggleQaTimer() {
+      const btn = document.getElementById('qa-start-btn');
+      if (qaTimerId) {
+        clearInterval(qaTimerId);
+        qaTimerId = null;
+        btn.textContent = 'Resume';
+      } else {
+        btn.textContent = 'Pause';
+        qaTimerId = setInterval(() => {
+          if (qaSeconds > 0) {
+            qaSeconds--;
+            document.getElementById('qa-timer').textContent = formatTimer(qaSeconds);
+          } else {
+            clearInterval(qaTimerId);
+            qaTimerId = null;
+            btn.textContent = 'Done';
+            showToast('3-minute Q&A time is up');
+          }
+        }, 1000);
+      }
+    }
+
+    function resetQaTimer() {
+      if (qaTimerId) { clearInterval(qaTimerId); qaTimerId = null; }
+      qaSeconds = 180;
+      document.getElementById('qa-timer').textContent = '03:00';
+      document.getElementById('qa-start-btn').textContent = 'Start';
+    }
+
+    function toggleBackupPanel() {
+      const panel = document.getElementById('backup-qa-panel');
+      const hero = document.getElementById('qa-clean-hero');
+      const btn = document.getElementById('backup-toggle-btn');
+      const isOpen = panel.classList.toggle('open');
+
+      if (isOpen) {
+        hero.style.flex = '0';
+        hero.style.padding = '11px 18px';
+        hero.style.gap = '6px';
+        hero.querySelector('h3').style.fontSize = '22px';
+        hero.querySelector('p').style.display = 'none';
+        btn.innerHTML = '&#10005; Hide Backup Questions';
+        btn.className = 'btn btn-ghost';
+      } else {
+        hero.style.flex = '1';
+        hero.style.padding = '26px';
+        hero.style.gap = '16px';
+        hero.querySelector('h3').style.fontSize = '40px';
+        hero.querySelector('p').style.display = 'block';
+        btn.innerHTML = '&#128161; Show Backup Questions';
+        btn.className = 'btn btn-amber';
+      }
+    }
+
+    function toggleQaAnswer(num, btnEl) {
+      const box = document.getElementById(`qa-ans-${num}`);
+      if (!box) return;
+      const open = box.classList.toggle('open');
+      btnEl.textContent = open ? 'Hide Answer' : 'Show Answer';
+    }
+
+    /* =========================================================================
+       9. KEYBOARD NAVIGATION & MOBILE TOUCH SWIPE
+       ========================================================================= */
+    document.addEventListener('keydown', (e) => {
+      const tag = e.target.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+
+      const over = document.getElementById('over');
+      const notes = document.getElementById('notes');
+      const overOpen = over.classList.contains('open');
+      const notesOpen = notes.classList.contains('open');
+      const k = e.key.toLowerCase();
+
+      if (e.key === 'Escape') {
+        if (overOpen) toggleOverview();
+        else if (notesOpen) toggleNotes();
+        else toggleOverview();
+        return;
+      }
+
+      if (k === 'o') { e.preventDefault(); toggleOverview(); return; }
+      if (k === 'n') { e.preventDefault(); toggleNotes(); return; }
+      if (k === 't') { e.preventDefault(); toggleTheme(); return; }
+      if (k === 'f') { e.preventDefault(); toggleFullscreen(); return; }
+
+      if (overOpen) return;
+
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === ' ') {
+        if (tag === 'BUTTON' || tag === 'A') return;
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        goTo(1);
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        goTo(TOTAL_SLIDES);
+      }
+    });
+
+    // Touch Swipe Support for Mobile Devices
+    let swipeX = 0;
+    let swipeY = 0;
+    document.addEventListener('touchstart', (e) => {
+      if (e.touches.length !== 1) return;
+      swipeX = e.touches[0].clientX;
+      swipeY = e.touches[0].clientY;
+    }, { passive: true });
+
+    document.addEventListener('touchend', (e) => {
+      if (!e.changedTouches.length) return;
+      if (document.getElementById('over').classList.contains('open')) return;
+      const dx = e.changedTouches[0].clientX - swipeX;
+      const dy = e.changedTouches[0].clientY - swipeY;
+      if (Math.abs(dx) > 65 && Math.abs(dx) > Math.abs(dy) * 1.45) {
+        if (dx < 0) nextSlide();
+        else prevSlide();
+      }
+    }, { passive: true });
+
+    window.addEventListener('resize', fit);
+    window.addEventListener('hashchange', parseHash);
+    window.addEventListener('beforeprint', preparePrintView);
+    window.addEventListener('afterprint', restoreInteractiveView);
+
+    window.onload = function () {
+      // Fallback sweep for any images that failed before onload
+      document.querySelectorAll('.roster-avatar img').forEach((img) => {
+        if (img.complete && img.naturalWidth === 0) {
+          img.onerror && img.onerror();
+        }
+      });
+      document.querySelectorAll('.photo-box img, .who-thumb img').forEach((img) => {
+        if (img.complete && img.naturalWidth === 0) {
+          img.onerror && img.onerror();
+        }
+      });
+
+      initSavedTheme();
+      fit();
+      renderPoll();
+      selectEra(0);
+      selectEthics(0);
+      filterSolutions('both');
+      parseHash();
+      drawSpectrogram();
+    };
+  </script>
+</body>
+</html>
