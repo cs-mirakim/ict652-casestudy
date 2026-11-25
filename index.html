@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -2624,7 +2624,7 @@
     <button id="next" onclick="nextSlide()" title="Next Slide (Right Arrow / Space)">Next &#8594;</button>
     <button id="bOver" onclick="toggleOverview()" title="Overview Grid (Key: O)">&#9638; Overview</button>
     <button id="bNotes" onclick="toggleNotes()" title="Bilingual Speaker Notes (Key: N)">&#128221; Notes</button>
-    <button id="bTheme" onclick="toggleTheme()" title="Toggle Light / Dark Mode (Key: T)">&#9728; Light</button>
+    <button id="bTheme" onclick="toggleTheme()" title="Toggle Light / Dark Mode (Key: T)">&#127769; Dark</button>
     <button id="bPdf" onclick="exportToPdf()" title="Export All 13 Slides as Light Mode PDF">&#128196; PDF</button>
     <button id="bFull" onclick="toggleFullscreen()" title="Fullscreen (Key: F)">&#9974; Full</button>
   </nav>
@@ -2635,7 +2635,7 @@
        ========================================================================= */
     const TOTAL_SLIDES = 13;
     let currentSlide = 1;
-    let currentTheme = 'dark';
+    let currentTheme = 'light';
     let toastTimeout = null;
 
     // Bilingual Speaker Notes (Zero em dashes, zero en dashes, zero Oxford commas)
@@ -2719,17 +2719,17 @@
     }
 
     /**
-     * Theme Switcher - Dark Mode default, Light Mode toggle persisted in localStorage.
+     * Theme Switcher - Light Mode default, Dark Mode toggle persisted in localStorage.
      */
     function applyTheme(theme, silent) {
-      currentTheme = theme === 'light' ? 'light' : 'dark';
+      currentTheme = theme === 'dark' ? 'dark' : 'light';
       document.documentElement.setAttribute('data-theme', currentTheme);
       const btn = document.getElementById('bTheme');
       if (btn) {
         btn.innerHTML = currentTheme === 'dark' ? '&#9728; Light' : '&#127769; Dark';
       }
       try {
-        localStorage.setItem('ict652_theme_final', currentTheme);
+        localStorage.setItem('ict652_theme_light_default', currentTheme);
       } catch (e) {}
       if (!silent) {
         showToast(currentTheme === 'light' ? 'Light Mode enabled' : 'Dark Mode enabled');
@@ -2741,9 +2741,9 @@
     }
 
     function initSavedTheme() {
-      let saved = 'dark';
+      let saved = 'light';
       try {
-        const v = localStorage.getItem('ict652_theme_final');
+        const v = localStorage.getItem('ict652_theme_light_default');
         if (v === 'light' || v === 'dark') saved = v;
       } catch (e) {}
       applyTheme(saved, true);
