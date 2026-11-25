@@ -1789,7 +1789,7 @@
             <div>
               <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
                 <span class="section-pill cyan" style="margin:0;">WHEN - TIMELINE OF TOXICITY</span>
-                <span class="no-print" style="font-size:12.5px; color:var(--text-muted); font-weight:600;">Click each decade to view how risk grew</span>
+                <span class="no-print" style="font-size:12.5px; color:var(--text-muted); font-weight:600;">Click each decade to view evidence &amp; escalation</span>
               </div>
               <div class="era-tabs-wrap" style="display:flex; gap:10px; margin-bottom:10px;">
                 <button class="era-tab active" id="era-0" onclick="selectEra(0)">
@@ -2769,19 +2769,14 @@
           <div style="display:flex; flex-direction:column; justify-content:space-between; gap:6px; padding:8px 10px; background:var(--bg-surface); border:1.5px solid var(--card-border); border-radius:9px;">
             <div>
               <div style="font-family:var(--font-heading); font-size:11px; font-weight:700; color:${e.color}; text-transform:uppercase;">${e.label}</div>
-              <div style="font-family:var(--font-heading); font-size:14px; font-weight:700; color:var(--text-main); margin:2px 0 5px 0;">${e.title}</div>
-              <ul class="clean-list" style="font-size:12px; gap:3px; line-height:1.35; padding-left:15px;">
+              <div style="font-family:var(--font-heading); font-size:13.5px; font-weight:700; color:var(--text-main); margin:2px 0 5px 0;">${e.title}</div>
+              <ul class="clean-list" style="font-size:11.5px; gap:3px; line-height:1.32; padding-left:14px;">
                 ${e.points.map((p) => `<li>${p}</li>`).join('')}
               </ul>
             </div>
-            <div style="margin-top:4px;">
-              <div style="display:flex; justify-content:space-between; font-size:11.5px; font-weight:700; margin-bottom:3px;">
-                <span>Risk Level</span>
-                <span style="color:${e.color};">${e.risk}%</span>
-              </div>
-              <div class="bar-track" style="height:8px;">
-                <div class="bar-fill" style="width:${e.risk}%; background:${e.color};"></div>
-              </div>
+            <div style="margin-top:4px; padding:6px 8px; border-radius:7px; background:var(--bg-primary); border:1px solid var(--border-line); border-left:3px solid ${e.color};">
+              <div style="font-family:var(--font-heading); font-size:10px; font-weight:700; color:${e.color}; text-transform:uppercase; letter-spacing:0.03em;">ERA EVIDENCE - ${e.evidenceTag}</div>
+              <p style="font-size:11px; color:var(--text-body); line-height:1.32; margin-top:2px;">${e.evidence}</p>
             </div>
           </div>
         `).join('');
@@ -3061,7 +3056,9 @@
     const ERAS = [
       {
         label: '2000s - Text Era',
-        risk: 35,
+        channel: 'Text Chat & LAN Servers',
+        evidenceTag: 'Suler (2004) - Early Disinhibition',
+        evidence: 'Abuse stayed mostly inside typed chat logs where word filters and local admins could step in; Suler (2004) documented text-based disinhibition.',
         color: 'var(--accent-cyan)',
         title: 'Typed Text Chat in Early Online & LAN Games',
         points: [
@@ -3072,7 +3069,9 @@
       },
       {
         label: '2010s - Open Voice Era',
-        risk: 72,
+        channel: 'Global Matchmaking & Live Voice',
+        evidenceTag: 'Kwak et al. (2015) & Wichita (2017)',
+        evidence: 'Kwak et al. (2015) analyzed 10.9M League of Legends Tribunal reports; unmonitored disputes escalated to fatal 2017 Wichita swatting (BBC News).',
         color: 'var(--accent-amber)',
         title: 'Live Voice Lobbies with Almost No Moderation',
         points: [
@@ -3083,13 +3082,15 @@
       },
       {
         label: '2020s - Cross-Platform & AI Era',
-        risk: 94,
+        channel: 'Cross-App Spillover & AI Defense',
+        evidenceTag: 'ADL (2022) & ToxMod (2023)',
+        evidence: 'ADL (2022) reported 80%+ gamers harassed (77% severe threats/stalking); Call of Duty added ToxMod AI, cutting severe voice toxicity by 50%.',
         color: 'var(--accent-red)',
         title: 'Social Media Spillover Countered by AI Moderation',
         points: [
           'Mobile esports boomed in Malaysia & SEA while fights spread to Discord, WhatsApp and TikTok.',
-          'Extreme cases included organized doxxing, cyber-stalking and fatal swatting.',
-          'Today studios are fighting back using real-time AI voice scanning and stricter laws.'
+          'Online conflicts spilled into doxxing and cyber-stalking, prompting laws like Penal Code s.507A.',
+          'Today studios are fighting back using real-time AI voice scanning and stricter enforcement.'
         ]
       }
     ];
@@ -3108,17 +3109,15 @@
             ${e.points.map((p) => `<li>${p}</li>`).join('')}
           </ul>
         </div>
-        <div class="col-5" style="display:flex; flex-direction:column; gap:8px; padding-left:14px; border-left:2px solid var(--border-line);">
-          <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:700;">
-            <span>Harm Risk Level</span>
-            <span style="color:${e.color};">${e.risk}%</span>
+        <div class="col-5" style="display:flex; flex-direction:column; justify-content:space-between; gap:8px; padding-left:14px; border-left:2px solid var(--border-line);">
+          <div>
+            <div style="font-family:var(--font-heading); font-size:11.5px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.06em;">ERA EVIDENCE &amp; ESCALATION</div>
+            <div style="font-family:var(--font-heading); font-size:15px; font-weight:700; color:${e.color}; margin-top:3px;">${e.channel}</div>
           </div>
-          <div class="bar-track" style="height:13px;">
-            <div class="bar-fill" style="width:${e.risk}%; background:${e.color};"></div>
+          <div style="padding:8px 11px; border-radius:8px; background:var(--bg-surface); border:1.5px solid var(--border-line); border-left:4px solid ${e.color};">
+            <div style="font-size:11px; font-weight:800; color:var(--text-main); margin-bottom:3px; text-transform:uppercase; letter-spacing:0.04em;">${e.evidenceTag}</div>
+            <p style="font-size:12.5px; color:var(--text-body); line-height:1.42;">${e.evidence}</p>
           </div>
-          <p style="font-size:12.5px; color:var(--text-muted); line-height:1.42;">
-            As live voice chat and social apps expanded, manual reporting could no longer keep up.
-          </p>
         </div>
       `;
     }
