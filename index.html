@@ -2766,17 +2766,22 @@
         eraBox.style.gridTemplateColumns = 'repeat(3, 1fr)';
         eraBox.style.alignItems = 'stretch';
         eraBox.innerHTML = ERAS.map((e) => `
-          <div style="display:flex; flex-direction:column; justify-content:space-between; gap:6px; padding:8px 10px; background:var(--bg-surface); border:1.5px solid var(--card-border); border-radius:9px;">
+          <div style="display:flex; flex-direction:column; justify-content:space-between; gap:5px; padding:8px 10px; background:var(--bg-surface); border:1.5px solid var(--card-border); border-radius:9px;">
             <div>
               <div style="font-family:var(--font-heading); font-size:11px; font-weight:700; color:${e.color}; text-transform:uppercase;">${e.label}</div>
-              <div style="font-family:var(--font-heading); font-size:13.5px; font-weight:700; color:var(--text-main); margin:2px 0 5px 0;">${e.title}</div>
-              <ul class="clean-list" style="font-size:11.5px; gap:3px; line-height:1.32; padding-left:14px;">
+              <div style="font-family:var(--font-heading); font-size:13.5px; font-weight:700; color:var(--text-main); margin:2px 0 4px 0;">${e.title}</div>
+              <ul class="clean-list" style="font-size:11.3px; gap:2.5px; line-height:1.3; padding-left:14px;">
                 ${e.points.map((p) => `<li>${p}</li>`).join('')}
               </ul>
             </div>
-            <div style="margin-top:4px; padding:6px 8px; border-radius:7px; background:var(--bg-primary); border:1px solid var(--border-line); border-left:3px solid ${e.color};">
-              <div style="font-family:var(--font-heading); font-size:10px; font-weight:700; color:${e.color}; text-transform:uppercase; letter-spacing:0.03em;">ERA EVIDENCE - ${e.evidenceTag}</div>
-              <p style="font-size:11px; color:var(--text-body); line-height:1.32; margin-top:2px;">${e.evidence}</p>
+            <div style="margin-top:4px; padding:6px 8px; border-radius:7px; background:var(--bg-primary); border:1px solid var(--border-line); border-left:3px solid ${e.color}; display:flex; flex-direction:column; gap:5px;">
+              <div>
+                <div style="font-family:var(--font-heading); font-size:10px; font-weight:700; color:${e.color}; text-transform:uppercase; letter-spacing:0.03em;">ERA EVIDENCE - ${e.evidenceTag}</div>
+                <p style="font-size:10.8px; color:var(--text-body); line-height:1.3; margin-top:2px;">${e.evidence}</p>
+              </div>
+              <div style="display:flex; flex-wrap:wrap; gap:4px;">
+                ${e.links.map((lk) => `<a class="cite-link${lk.red ? ' red' : ''}" href="${lk.url}" target="_blank" rel="noopener noreferrer" style="padding:2px 7px; font-size:10px;">&#128279; ${lk.label} &#8599;</a>`).join('')}
+              </div>
             </div>
           </div>
         `).join('');
@@ -3059,6 +3064,9 @@
         channel: 'Text Chat & LAN Servers',
         evidenceTag: 'Suler (2004) - Early Disinhibition',
         evidence: 'Abuse stayed mostly inside typed chat logs where word filters and local admins could step in; Suler (2004) documented text-based disinhibition.',
+        links: [
+          { label: 'Suler (2004) - PubMed', url: 'https://pubmed.ncbi.nlm.nih.gov/15257832/', red: false }
+        ],
         color: 'var(--accent-cyan)',
         title: 'Typed Text Chat in Early Online & LAN Games',
         points: [
@@ -3072,6 +3080,10 @@
         channel: 'Global Matchmaking & Live Voice',
         evidenceTag: 'Kwak et al. (2015) & Wichita (2017)',
         evidence: 'Kwak et al. (2015) analyzed 10.9M League of Legends Tribunal reports; unmonitored disputes escalated to fatal 2017 Wichita swatting (BBC News).',
+        links: [
+          { label: 'Kwak et al. (2015)', url: 'https://arxiv.org/abs/1504.02305', red: false },
+          { label: 'BBC News - Wichita (2017)', url: 'https://www.bbc.com/news/world-us-canada-42523045', red: true }
+        ],
         color: 'var(--accent-amber)',
         title: 'Live Voice Lobbies with Almost No Moderation',
         points: [
@@ -3085,6 +3097,10 @@
         channel: 'Cross-App Spillover & AI Defense',
         evidenceTag: 'ADL (2022) & ToxMod (2023)',
         evidence: 'ADL (2022) reported 80%+ gamers harassed (77% severe threats/stalking); Call of Duty added ToxMod AI, cutting severe voice toxicity by 50%.',
+        links: [
+          { label: 'ADL Report (2022)', url: 'https://www.adl.org/resources/report/hate-no-game-hate-and-harassment-online-games-2022', red: true },
+          { label: 'Call of Duty ToxMod (2023)', url: 'https://www.callofduty.com/blog/2023/08/call-of-duty-modern-warfare-warzone-anti-toxicity-progress-report', red: false }
+        ],
         color: 'var(--accent-red)',
         title: 'Social Media Spillover Countered by AI Moderation',
         points: [
@@ -3109,14 +3125,19 @@
             ${e.points.map((p) => `<li>${p}</li>`).join('')}
           </ul>
         </div>
-        <div class="col-5" style="display:flex; flex-direction:column; justify-content:space-between; gap:8px; padding-left:14px; border-left:2px solid var(--border-line);">
-          <div>
-            <div style="font-family:var(--font-heading); font-size:11.5px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.06em;">ERA EVIDENCE &amp; ESCALATION</div>
-            <div style="font-family:var(--font-heading); font-size:15px; font-weight:700; color:${e.color}; margin-top:3px;">${e.channel}</div>
+        <div class="col-5" style="display:flex; flex-direction:column; justify-content:space-between; gap:7px; padding-left:14px; border-left:2px solid var(--border-line);">
+          <div style="display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:6px;">
+            <span style="font-family:var(--font-heading); font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em;">ERA EVIDENCE &amp; ESCALATION</span>
+            <span style="font-family:var(--font-heading); font-size:12.5px; font-weight:700; color:${e.color};">${e.channel}</span>
           </div>
-          <div style="padding:8px 11px; border-radius:8px; background:var(--bg-surface); border:1.5px solid var(--border-line); border-left:4px solid ${e.color};">
-            <div style="font-size:11px; font-weight:800; color:var(--text-main); margin-bottom:3px; text-transform:uppercase; letter-spacing:0.04em;">${e.evidenceTag}</div>
-            <p style="font-size:12.5px; color:var(--text-body); line-height:1.42;">${e.evidence}</p>
+          <div style="padding:7px 10px; border-radius:8px; background:var(--bg-surface); border:1.5px solid var(--border-line); border-left:4px solid ${e.color}; display:flex; flex-direction:column; gap:6px;">
+            <div>
+              <div style="font-size:11px; font-weight:800; color:var(--text-main); margin-bottom:2px; text-transform:uppercase; letter-spacing:0.04em;">${e.evidenceTag}</div>
+              <p style="font-size:12.2px; color:var(--text-body); line-height:1.38;">${e.evidence}</p>
+            </div>
+            <div style="display:flex; flex-wrap:wrap; gap:6px;">
+              ${e.links.map((lk) => `<a class="cite-link${lk.red ? ' red' : ''}" href="${lk.url}" target="_blank" rel="noopener noreferrer" style="padding:3px 9px; font-size:11px;">&#128279; ${lk.label} &#8599;</a>`).join('')}
+            </div>
           </div>
         </div>
       `;
